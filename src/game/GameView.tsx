@@ -14,6 +14,7 @@ import {
 } from "@rive-app/react-canvas";
 import { ConnectButton, useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { MintNFT } from "../tools/SUITools";
+import { SingleRiveSwitcher } from "./SingleRiveSwitcher";
 
 const GameView = forwardRef<HTMLDivElement>((_, ref) => {
   const account = useCurrentAccount();
@@ -59,6 +60,11 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
     }
   };
 
+  const handleRiveEvent = ({ name, index }: { name: string; index: number }) => {
+    console.log(`Rive event fired on animation #${index}:`, name);
+    MintNFT(account, signAndExecute, 'https://i.imgur.com/UEozkJd.jpeg');
+  };
+
   return (
     <div
       ref={containerRef}
@@ -74,11 +80,12 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
       <div style={{ position: "absolute", top: 8, right: 8, zIndex: 10 }}>
         <ConnectButton />
       </div>
-      {/* attach the rive container and canvas refs here */}
-      <div ref={setContainerRef} style={{ width: "100%", height: "100%" }}>
-        <canvas ref={setCanvasRef} style={{ width: "100%", height: "100%" }} />
-      </div>
       
+      {/* <div ref={setContainerRef} style={{ width: "100%", height: "100%" }}>
+        <canvas ref={setCanvasRef} style={{ width: "100%", height: "100%" }} />
+      </div> */}
+
+      <SingleRiveSwitcher onRiveEvent={handleRiveEvent} />
     </div>
   );
 });
