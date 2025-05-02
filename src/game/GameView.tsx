@@ -78,9 +78,7 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
       <div ref={setContainerRef} style={{ width: "100%", height: "100%" }}>
         <canvas ref={setCanvasRef} style={{ width: "100%", height: "100%" }} />
       </div>
-      {/* you can still use <RiveComponent /> if you prefer:
-          <RiveComponent />
-      */}
+      
     </div>
   );
 });
