@@ -19,7 +19,6 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
   const account = useCurrentAccount();
   const signAndExecute = useSignAndExecuteTransaction();
 
-  // create a local ref for the container and expose it via the forwarded ref
   const containerRef = useRef<HTMLDivElement>(null);
   useImperativeHandle(ref, () => containerRef.current!);
 
