@@ -1,91 +1,62 @@
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-} from "react";
-import {
-  useRive,
-  EventType,
-  RiveEventType,
-  Layout,
-  Fit,
-  Alignment,
-} from "@rive-app/react-canvas";
+// src/game/GameView.tsx
+import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
+import { EventType, RiveEventType } from "@rive-app/react-canvas";
 import { ConnectButton, useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { MintNFT } from "../tools/SUITools";
-import { SingleRiveSwitcher } from "./SingleRiveSwitcher";
+import { SingleRiveSwitcher, RiveEventWithIndex } from "./SingleRiveSwitcher";
 
 const GameView = forwardRef<HTMLDivElement>((_, ref) => {
   const account = useCurrentAccount();
   const signAndExecute = useSignAndExecuteTransaction();
 
+  // ← this is our new “lifted” state
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // when a Rive event fires from within SingleRiveSwitcher...
+  const handleRiveEvent = ({ name, index }: RiveEventWithIndex) => {
+    console.log(`Rive event fired on animation #${index}:`, name);
+    
+    // MintNFT(account, signAndExecute, "https://i.imgur.com/UEozkJd.jpeg");
+    // setCurrentIndex((prev) => (prev + 1) % 3);
+
+    switch (name) {
+      case "click_1":
+        setCurrentIndex(0);
+        break;
+      case "click_2":
+        setCurrentIndex(1);
+        break;
+      case "click_3":
+        setCurrentIndex(2);
+        break;
+    }
+  };
+
   const containerRef = useRef<HTMLDivElement>(null);
   useImperativeHandle(ref, () => containerRef.current!);
-
-  const {
-    setCanvasRef,
-    setContainerRef,
-    rive,
-  } = useRive(
-    {
-      src: "https://arweave.net/kYSz9S1bRTvd06rcq-DaomljhwV_pBFeeRa2BJfF974",
-      artboard: "Artboard",
-      stateMachines: "State Machine 1",
-      autoplay: true,
-      layout: new Layout({
-        fit: Fit.FitWidth,
-        alignment: Alignment.TopCenter,
-      }),
-      onLoad: () => console.log("Rive loaded!"),
-      onPlay: () => console.log("Animation is playing.."),
-    },
-    {
-      shouldResizeCanvasToContainer: true,
-    }
-  );
-
-  useEffect(() => {
-    if (rive) rive.on(EventType.RiveEvent, onRiveEventReceived);
-    return () => {
-      if (rive) rive.off(EventType.RiveEvent, onRiveEventReceived);
-    };
-  }, [rive]);
-
-  const onRiveEventReceived = (e: any) => {
-    if (e.data.type === RiveEventType.General) {
-      console.log("Event name", e.data.name);
-      // now your MintNFT helper can be called safely
-      MintNFT(account, signAndExecute, "https://i.imgur.com/UEozkJd.jpeg");
-    }
-  };
-
-  const handleRiveEvent = ({ name, index }: { name: string; index: number }) => {
-    console.log(`Rive event fired on animation #${index}:`, name);
-    MintNFT(account, signAndExecute, 'https://i.imgur.com/UEozkJd.jpeg');
-  };
 
   return (
     <div
       ref={containerRef}
       style={{
         position: "absolute",
-        height: "100%",
+        top: 0,
+        left: 0,
         width: "100%",
+        height: "100%",
         backgroundColor: "black",
-        margin: 0,
-        padding: 0,
       }}
-    > 
+    >
       <div style={{ position: "absolute", top: 8, right: 8, zIndex: 10 }}>
         <ConnectButton />
       </div>
-      
-      {/* <div ref={setContainerRef} style={{ width: "100%", height: "100%" }}>
-        <canvas ref={setCanvasRef} style={{ width: "100%", height: "100%" }} />
-      </div> */}
 
-      <SingleRiveSwitcher onRiveEvent={handleRiveEvent} />
+      {/* pass both the controlled index and your handler */}
+      <SingleRiveSwitcher
+        index={currentIndex}
+        onIndexChange={setCurrentIndex}
+        onRiveEvent={handleRiveEvent}
+      />
     </div>
   );
 });

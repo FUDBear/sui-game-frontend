@@ -1,43 +1,98 @@
-// SingleRiveSwitcher.tsx
-import React, { useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import DynamicRive from "./DynamicRive";
+// src/game/SingleRiveSwitcher.tsx
+import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  useRive,
+  EventType,
+  RiveEventType,
+  Layout,
+  Fit,
+  Alignment,
+} from "@rive-app/react-canvas";
 
-const riveUrls = [
+export const riveUrls = [
   "https://arweave.net/lYnwRYyAywkFLi-uXrfSEtXC4M154UxgQCSXBnMuk8Q",
   "https://arweave.net/nAwybMT1YihjZoj2wOgb9Cs7DA6N6HdtfadaA-l8dlg",
   "https://arweave.net/3TyDt1UmAeF2DXa8bXAvq5ECbXbUabUTLK6Ewi8Jsto",
 ];
 
-export const SingleRiveSwitcher: React.FC<{
-  onRiveEvent?: (e: { name: string; index: number }) => void;
-}> = ({ onRiveEvent }) => {
-  const [current, setCurrent] = useState(0);
+export type RiveEventWithIndex = { name: string; index: number };
 
-  const prev = useCallback(() => setCurrent(c => (c - 1 + riveUrls.length) % riveUrls.length), []);
-  const next = useCallback(() => setCurrent(c => (c + 1) % riveUrls.length), []);
+interface SingleRiveSwitcherProps {
+  index: number;
+  onIndexChange: (i: number) => void;
+  onRiveEvent?: (e: RiveEventWithIndex) => void;
+}
+
+export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
+  index,
+  onIndexChange,
+  onRiveEvent,
+}) => {
+  const prev = () => onIndexChange((index - 1 + riveUrls.length) % riveUrls.length);
+  const next = () => onIndexChange((index + 1) % riveUrls.length);
 
   return (
     <div>
-       <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait">
         <motion.div
-            key={riveUrls[current]}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { delay: 0.2, duration: 1 } }}
-            transition={{ duration: 1 }}
+          key={riveUrls[index]}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, transition: { delay: 0.5, duration: 1 } }}
+          transition={{ duration: 1 }}
+          style={{ position: "absolute", width: "100%", height: "100%" }}
         >
-            <DynamicRive src={riveUrls[current]} onRiveEvent={e => onRiveEvent?.({ name: e.name, index: current })} />
+          <DynamicRive
+            src={riveUrls[index]}
+            onRiveEvent={(ev) => onRiveEvent?.({ name: ev.name, index })}
+          />
         </motion.div>
-        </AnimatePresence>
+      </AnimatePresence>
 
-      <div style={{
-        position: "absolute", bottom: 8, left: 0, right: 0,
-        display: "flex", justifyContent: "center", gap: 8
-      }}>
+      <div style={{ position: "absolute", bottom: 8, left: 0, right: 0, textAlign: "center" }}>
         <button onClick={prev}>◀ Prev</button>
-        <button onClick={next}>Next ▶</button>
+        <button onClick={next} style={{ marginLeft: 8 }}>
+          Next ▶
+        </button>
       </div>
+    </div>
+  );
+};
+
+interface DynamicRiveProps {
+  src: string;
+  onRiveEvent?: (e: { name: string }) => void;
+}
+
+const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent }) => {
+  const { setCanvasRef, setContainerRef, rive } = useRive(
+    {
+      src,
+      artboard: "Artboard",
+      stateMachines: "State Machine 1",
+      autoplay: true,
+      layout: new Layout({ fit: Fit.FitWidth, alignment: Alignment.TopCenter }),
+      onLoad: () => console.log("Rive loaded:", src),
+      onPlay: () => console.log("Rive playing:", src),
+    },
+    { shouldResizeCanvasToContainer: true }
+  );
+
+  React.useEffect(() => {
+    if (!rive || !onRiveEvent) return;
+    const handler = (e: any) => {
+      if (e.data.type === RiveEventType.General) {
+        onRiveEvent({ name: e.data.name });
+      }
+    };
+    rive.on(EventType.RiveEvent, handler);
+    return () => void rive.off(EventType.RiveEvent, handler);
+  }, [rive, onRiveEvent]);
+
+  return (
+    <div ref={setContainerRef} style={{ width: "100%", height: "100%" }}>
+      <canvas ref={setCanvasRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );
 };
