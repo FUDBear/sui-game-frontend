@@ -5,6 +5,8 @@ import { CounterIncrementor } from "./CounterIncrementor";
 import MintNFTButton from "./MintNFTButton";
 import PlayGameButton from "./PlayGameButton";
 import GameView from "./game/GameView";
+import WalletNFTs from "./WalletNFTs";
+import { OwnedNFTs } from "./OwnedNFTs";
 
 function App() {
   return (
@@ -41,6 +43,20 @@ function App() {
       {/* </Container> */}
 
       <GameView />
+      {/* <WalletNFTs /> */}
+      {/* <OwnedNFTs /> */}
+
+      {/* <Container>
+      
+        <Container
+          mt="5"
+          pt="2"
+          px="4"
+          style={{ background: "var(--gray-a2)", minHeight: 500 }}
+        >
+          <WalletStatus />
+        </Container>
+      </Container> */}
     </>
   );
 }

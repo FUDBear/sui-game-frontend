@@ -11,9 +11,11 @@ import {
 } from "@rive-app/react-canvas";
 
 export const riveUrls = [
-  "https://arweave.net/lYnwRYyAywkFLi-uXrfSEtXC4M154UxgQCSXBnMuk8Q",
-  "https://arweave.net/nAwybMT1YihjZoj2wOgb9Cs7DA6N6HdtfadaA-l8dlg",
-  "https://arweave.net/3TyDt1UmAeF2DXa8bXAvq5ECbXbUabUTLK6Ewi8Jsto",
+//   "https://arweave.net/lYnwRYyAywkFLi-uXrfSEtXC4M154UxgQCSXBnMuk8Q",
+//   "https://arweave.net/pBI4GLGDMjFcFq2Nbg2XAU5P3o7VxazEA02akqT8dV8",
+//   "https://arweave.net/KMCVb_Ky4fm2ML6ZL7eemao0Sp33FeOMC6kMEv6n1QU",
+//   "/df_test.riv",
+  "/df_test.riv",
 ];
 
 export type RiveEventWithIndex = { name: string; index: number };
@@ -41,7 +43,7 @@ export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { delay: 0.5, duration: 1 } }}
           transition={{ duration: 1 }}
-          style={{ position: "absolute", width: "100%", height: "100%" }}
+          style={{ position: "relative", overflow: "hidden", width: "100%", height: "100vh" }}
         >
           <DynamicRive
             src={riveUrls[index]}
@@ -69,7 +71,7 @@ const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent }) => {
   const { setCanvasRef, setContainerRef, rive } = useRive(
     {
       src,
-      artboard: "Artboard",
+      artboard: "Main_AB",
       stateMachines: "State Machine 1",
       autoplay: true,
       layout: new Layout({ fit: Fit.FitWidth, alignment: Alignment.TopCenter }),

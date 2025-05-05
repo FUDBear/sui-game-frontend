@@ -21,7 +21,7 @@ const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent }) => {
       stateMachines: "State Machine 1",
       autoplay: true,
       layout: new Layout({
-        fit: Fit.FitWidth,
+        fit: Fit.Contain,
         alignment: Alignment.TopCenter,
       }),
       onLoad: () => console.log("Rive loaded:", src),
