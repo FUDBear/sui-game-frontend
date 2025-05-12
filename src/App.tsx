@@ -1,4 +1,5 @@
-import { ConnectButton } from "@mysten/dapp-kit";
+import { useEffect } from "react";
+import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 import { Box, Container, Flex, Heading } from "@radix-ui/themes";
 import { WalletStatus } from "./WalletStatus";
 import { CounterIncrementor } from "./CounterIncrementor";
@@ -7,8 +8,17 @@ import PlayGameButton from "./PlayGameButton";
 import GameView from "./game/GameView";
 import WalletNFTs from "./WalletNFTs";
 import { OwnedNFTs } from "./OwnedNFTs";
-
+import { useGlobalContext } from "./tools/GlobalProvider";
 function App() {
+
+  const { ADDRESS, setADDRESS } = useGlobalContext();
+  const account = useCurrentAccount();
+
+  useEffect(() => {
+    // console.log("ACCOUNT", account?.address);
+    setADDRESS(account?.address || "disconnected");
+  }, [account]);
+  
   return (
     <>
       {/* <Flex

@@ -9,18 +9,22 @@ import { Theme } from "@radix-ui/themes";
 import App from "./App.tsx";
 import { networkConfig } from "./networkConfig.ts";
 
+import GlobalProvider from "./tools/GlobalProvider";
+
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    <GlobalProvider>
     <Theme appearance="dark">
       <QueryClientProvider client={queryClient}>
         <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
           <WalletProvider autoConnect>
             <App />
           </WalletProvider>
-        </SuiClientProvider>
-      </QueryClientProvider>
-    </Theme>
+          </SuiClientProvider>
+        </QueryClientProvider>
+      </Theme>
+    </GlobalProvider>
   </React.StrictMode>,
 );

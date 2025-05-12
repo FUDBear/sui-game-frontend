@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useEffect, useRef } from "react";
 import { Alignment, Fit, Layout, Rive, StateMachineInputType } from "@rive-app/canvas";
+import { useGlobalContext } from "../tools/GlobalProvider";
 
 export interface DynamicRiveProps {
   src: string;
@@ -8,15 +9,33 @@ export interface DynamicRiveProps {
 }
 
 const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent, cardIndex }) => {
+
+  const { PLAYER_DATA, setPLAYER_DATA } = useGlobalContext();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const riveRef = useRef<any>(null);
 
-  const randCardIndex = ( vm: any, value: number ) => {
-    const card = vm?.number("card_" + value + "_index");
-    card.value = Math.floor(Math.random() * 14);
+  const randCardIndex = ( vm: any, cardIndex: number ) => {
+    console.log("card: ", cardIndex);
+
+    // Get the clicked cards selceted index
+    const card = vm?.number("card_" + cardIndex + "_index");
+    console.log("card: ", card.value);
+
+    const selected = vm?.boolean("card_" + cardIndex + "_selected");
+    if( selected ) {
+      console.log("Before selected: ", selected.value);
+      selected.value = !selected.value;
+      console.log("After selected: ", selected.value);
+    }
+    
+    setPLAYER_DATA({
+      ...PLAYER_DATA,
+      selectedCards: PLAYER_DATA.selectedCards.map((val, i) => 
+        i === cardIndex ? card.value : val
+      ),
+    });
   }
 
-  // ← Insert your high-DPI resize observer here
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -28,19 +47,15 @@ const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent, cardIndex }
       canvas.height = height * dpr;
       const ctx = canvas.getContext("2d");
       if (ctx) ctx.scale(dpr, dpr);
-      // if the Rive instance exposes resize…
       riveRef.current?.resizeDrawingSurfaceToCanvas?.();
     };
 
-    // run once immediately
     resize();
-    // watch for container size changes
     const ro = new ResizeObserver(resize);
     ro.observe(canvas.parentElement!);
     return () => ro.disconnect();
   }, [src, cardIndex]);
 
-  // ← Then your existing effect that creates/cleans up the Rive instance
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -60,6 +75,20 @@ const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent, cardIndex }
         let vmi = riveRef.current?.viewModelInstance;
         const properties = vmi?.properties;
         console.log(properties);
+
+        // Randomize the cards
+        const card1 = vmi?.number("card_0_index");
+        if( card1 ) {
+          card1.value = Math.floor(Math.random() * 14);
+        }
+        const card2 = vmi?.number("card_1_index");
+        if( card2 ) {
+          card2.value = Math.floor(Math.random() * 14);
+        }
+        const card3 = vmi?.number("card_2_index");
+        if( card3 ) {
+          card3.value = Math.floor(Math.random() * 14);
+        }
 
         let clickIndex = vmi?.number("click_index");
         if (!clickIndex) {
@@ -92,7 +121,6 @@ const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent, cardIndex }
         
       },
       onStateChange: (ctx) => {
-        // handle events…
       },
     });
     riveRef.current = r;
