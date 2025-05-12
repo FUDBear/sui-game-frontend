@@ -42,9 +42,11 @@ function App() {
         </Container> */}
       {/* </Container> */}
 
-      <div style={{ width: "100%", height: "100vh", backgroundColor: "black" }}>
+      <GameView />
+
+      {/* <div style={{ width: "100%", height: "100vh", backgroundColor: "black" }}>
         <GameView />
-      </div>
+      </div> */}
       {/* <WalletNFTs /> */}
       {/* <OwnedNFTs /> */}
 
