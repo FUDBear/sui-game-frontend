@@ -11,10 +11,9 @@ import {
 } from "@rive-app/react-canvas";
 
 export const riveUrls = [
-//   "https://arweave.net/lYnwRYyAywkFLi-uXrfSEtXC4M154UxgQCSXBnMuk8Q",
-//   "https://arweave.net/pBI4GLGDMjFcFq2Nbg2XAU5P3o7VxazEA02akqT8dV8",
-//   "https://arweave.net/KMCVb_Ky4fm2ML6ZL7eemao0Sp33FeOMC6kMEv6n1QU",
-//   "/df_test.riv",
+  "https://walrus.tusky.io/F2TKOpWVCphPPhjAlcFjxreRxMfPGuOk_hcf_NBqOyA",
+  "https://walrus.tusky.io/0wEkXukCixZc57RZjOiS8SDFZ-Q656Zi7q0y96ZY8Nw",
+  "/dfc_intro.riv",
   "/df_test.riv",
 ];
 
@@ -72,7 +71,7 @@ const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent }) => {
     {
       src,
       artboard: "Main_AB",
-      stateMachines: "State Machine 1",
+      stateMachines: "Main_SM",
       autoplay: true,
       layout: new Layout({ fit: Fit.FitWidth, alignment: Alignment.TopCenter }),
       onLoad: () => console.log("Rive loaded:", src),

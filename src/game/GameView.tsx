@@ -29,6 +29,9 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
       case "click_3":
         setCurrentIndex(2);
         break;
+      case "PlayGame":
+        setCurrentIndex(1);
+        break;
     }
   };
 
