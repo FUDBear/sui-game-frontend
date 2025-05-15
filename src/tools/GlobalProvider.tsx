@@ -1,34 +1,18 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-
+import { GameState, CatchHistory } from '../types';
 
 interface GlobalContextType {
   ADDRESS: string;
   setADDRESS: React.Dispatch<React.SetStateAction<string>>;
   PLAYER_DATA: PlayerData;
   setPLAYER_DATA: React.Dispatch<React.SetStateAction<PlayerData>>;
+  gameState: GameState | null;
+  catchHistory: string[];
 }
 
 export interface GameData {
   address: string;
-  // player net - Whatever they last caught and must claim to clear out
-  // cards in deck
-  // cards in hand
-  // Time of day
-  // event in play
-  // Event turns
-
-
-
-  // -- Hide These -- //
-  // Fish in lake
-  // -- Depths
-  // -- Types
-  // 
-
-  // -- Stats -- //
-  // Total of catches for all players
-  // Total casts of all players
-  // Total players in game
+  // other global game data fields...
 }
 
 export interface PlayerData {
@@ -43,16 +27,49 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [ADDRESS, setADDRESS] = useState<string>('disconnected');
   const [PLAYER_DATA, setPLAYER_DATA] = useState<PlayerData>({
     address: '',
-    selectedCards: [ -1, -1, -1], // Always 3 cards
+    selectedCards: [-1, -1, -1],
   });
- 
+
+  const [gameState, setGameState] = useState<GameState | null>(null);
+  const [catchHistory, setCatchHistory] = useState<string[]>([]);
+
+  // Fetch game state every 3 seconds
   useEffect(() => {
-    console.log("ADDRESS", ADDRESS);
-  }, [ADDRESS]);
+    const fetchState = async () => {
+      try {
+        const res = await fetch('https://sui-game.onrender.com/state');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data: GameState = await res.json();
+        setGameState(data);
+      } catch (e) {
+        console.error('Error fetching game state:', e);
+      }
+    };
+    fetchState();
+    const interval = setInterval(fetchState, 3_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Fetch catch history every 5 seconds
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const res = await fetch('https://sui-game.onrender.com/catch-history');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data: CatchHistory = await res.json();
+        setCatchHistory(data.history);
+      } catch (e) {
+        console.error('Error fetching catch history:', e);
+      }
+    };
+    fetchHistory();
+    const interval = setInterval(fetchHistory, 5_000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
-    console.log("PLAYER_DATA", PLAYER_DATA);
-  }, [PLAYER_DATA]);
+    console.log("Cards: ", PLAYER_DATA.selectedCards);
+  }, [PLAYER_DATA.selectedCards]);
 
   return (
     <GlobalContext.Provider
@@ -61,6 +78,8 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         setADDRESS,
         PLAYER_DATA,
         setPLAYER_DATA,
+        gameState,
+        catchHistory,
       }}
     >
       {children}
@@ -70,9 +89,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
 export const useGlobalContext = () => {
   const context = useContext(GlobalContext);
-  if (!context) {
-    throw new Error("useGlobalContext must be used within a GlobalProvider");
-  }
+  if (!context) throw new Error('useGlobalContext must be used within a GlobalProvider');
   return context;
 };
 
