@@ -1,15 +1,15 @@
-import React, { useState, forwardRef, useImperativeHandle, useRef } from "react";
+import React, { useState, forwardRef, useImperativeHandle, useRef, useEffect } from "react";
 import { ConnectButton } from "@mysten/dapp-kit";
 import { SingleRiveSwitcher, RiveEventWithIndex } from "./SingleRiveSwitcher";
 import { useGlobalContext } from "../tools/GlobalProvider";
 
 const GameView = forwardRef<HTMLDivElement>((_, ref) => {
-  const { gameState, catchHistory, ADDRESS, PLAYER_DATA } = useGlobalContext();
+  const { gameState, catchHistory, ADDRESS, PLAYER_DATA, currentHour } = useGlobalContext();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [historyOpen, setHistoryOpen] = useState<boolean>(false);
   const [casting, setCasting] = useState<boolean>(false);
   const [claiming, setClaiming] = useState<boolean>(false);
-
+  const [timeNormalized, setTimeNormalized] = useState<number>(0);
   const handleRiveEvent = ({ name, index }: RiveEventWithIndex) => {
     console.log(`Rive event on #${index}:`, name);
     switch (name) {
@@ -71,6 +71,12 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
   useImperativeHandle(ref, () => containerRef.current!);
 
+  useEffect(() => {
+    console.log("Current Hour:", currentHour);
+    const normalized = currentHour / 24;
+    setTimeNormalized(normalized);
+  }, [currentHour]);
+
   return (
     <div ref={containerRef} style={{ position: 'relative' }}>
       {/* Connect */}
@@ -85,6 +91,7 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
           <div><strong>Event:</strong> {gameState.event ?? 'None'}</div>
           <div><strong>Hour:</strong> {gameState.hour}</div>
           <div><strong>Catches:</strong> {gameState.catches.length}</div>
+          <div><strong>Current Hour:</strong> {currentHour}</div>
         </div>
       )}
 
@@ -119,6 +126,7 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
         onIndexChange={setCurrentIndex}
         onRiveEvent={handleRiveEvent}
         cardIndex={currentIndex}
+        timeNormalized={timeNormalized}
       />
 
       {/* Cast & Claim Buttons */}

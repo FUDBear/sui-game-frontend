@@ -8,6 +8,7 @@ interface GlobalContextType {
   setPLAYER_DATA: React.Dispatch<React.SetStateAction<PlayerData>>;
   gameState: GameState | null;
   catchHistory: string[];
+  currentHour: number;
 }
 
 export interface GameData {
@@ -32,6 +33,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [catchHistory, setCatchHistory] = useState<string[]>([]);
+  const [currentHour, setCurrentHour] = useState<number>(0);
 
   // Fetch game state every 3 seconds
   useEffect(() => {
@@ -71,6 +73,22 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     console.log("Cards: ", PLAYER_DATA.selectedCards);
   }, [PLAYER_DATA.selectedCards]);
 
+  useEffect(() => {
+    const fetchHour = async () => {
+      try {
+        const res = await fetch('https://sui-game.onrender.com/time');
+        if (!res.ok) throw new Error(res.statusText);
+        const { hour }: { hour: number } = await res.json();
+        setCurrentHour(hour);
+      } catch (e) {
+        console.error('Failed to fetch time:', e);
+      }
+    };
+    fetchHour();
+    const interval = setInterval(fetchHour, 1_000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -80,6 +98,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         setPLAYER_DATA,
         gameState,
         catchHistory,
+        currentHour,
       }}
     >
       {children}

@@ -14,6 +14,7 @@ export type RiveEventWithIndex = { name: string; index: number };
 interface SingleRiveSwitcherProps {
   index: number;
   cardIndex: number;
+  timeNormalized: number;
   onIndexChange: (i: number) => void;
   onRiveEvent?: (e: RiveEventWithIndex) => void;
 }
@@ -21,6 +22,7 @@ interface SingleRiveSwitcherProps {
 export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
   index,
   cardIndex,
+  timeNormalized,
   onIndexChange,
   onRiveEvent,
 }) => {
