@@ -3,9 +3,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import DynamicRive from "./DynamicRive";
 
 export const riveUrls = [
-  "https://walrus.tusky.io/F2TKOpWVCphPPhjAlcFjxreRxMfPGuOk_hcf_NBqOyA",
-  "/dfc_maingame.riv",
+  // "https://walrus.tusky.io/F2TKOpWVCphPPhjAlcFjxreRxMfPGuOk_hcf_NBqOyA",
   "/dfc_intro.riv",
+  "/dfc_maingame.riv",
   "/df_test.riv",
 ];
 
