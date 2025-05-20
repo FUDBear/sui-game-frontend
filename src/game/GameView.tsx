@@ -86,7 +86,7 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
 
       {/* State Display */}
       {gameState && (
-        <div style={{ position: 'absolute', top: 8, left: 8, zIndex: 10, background: 'rgba(0,0,0,0.5)', padding: 8, borderRadius: 4, color: '#fff' }}>
+        <div style={{ position: 'absolute', bottom: 8, left: 8, zIndex: 10, background: 'rgba(0,0,0,0.5)', padding: 8, borderRadius: 4, color: '#fff' }}>
           <div><strong>Phase:</strong> {gameState.phase}</div>
           <div><strong>Event:</strong> {gameState.event ?? 'None'}</div>
           <div><strong>Hour:</strong> {gameState.hour}</div>
@@ -96,17 +96,17 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
       )}
 
       {/* History Toggle */}
-      <div style={{ position: 'absolute', bottom: 8, left: 8, zIndex: 10 }}>
+      {/* <div style={{ position: 'absolute', bottom: 8, left: 8, zIndex: 10 }}>
         <button
           onClick={() => setHistoryOpen(open => !open)}
           style={{ padding: '6px 12px', borderRadius: 4, background: '#222', color: '#fff', border: 'none', cursor: 'pointer' }}
         >
           {historyOpen ? 'Hide History' : 'Show History'}
         </button>
-      </div>
+      </div> */}
 
       {/* History Panel */}
-      {historyOpen && catchHistory.length > 0 && (
+      {/* {historyOpen && catchHistory.length > 0 && (
         <div
           onClick={() => setHistoryOpen(false)}
           style={{ position: 'absolute', bottom: 48, left: 8, zIndex: 10, maxHeight: 200, width: 300, overflowY: 'auto', background: 'rgba(0,0,0,0.8)', padding: 8, borderRadius: 4, color: '#fff', cursor: 'pointer' }}
@@ -118,7 +118,7 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
             ))}
           </ul>
         </div>
-      )}
+      )} */}
 
       {/* Rive UI */}
       <SingleRiveSwitcher
@@ -127,7 +127,7 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
       />
 
       {/* Cast & Claim Buttons */}
-      <div style={{ position: 'absolute', bottom: 8, right: 8, zIndex: 10, display: 'flex', gap: 8 }}>
+      {/* <div style={{ position: 'absolute', bottom: 8, right: 8, zIndex: 10, display: 'flex', gap: 8 }}>
         <button
           onClick={handleCast}
           disabled={casting}
@@ -142,7 +142,7 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
         >
           {claiming ? 'Claiming...' : 'Claim'}
         </button>
-      </div>
+      </div> */}
     </div>
   );
 });

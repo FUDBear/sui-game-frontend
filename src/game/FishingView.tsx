@@ -4,6 +4,43 @@ import { Rive, Layout, Fit, Alignment } from "@rive-app/canvas";
 import { useGlobalContext } from "../tools/GlobalProvider";
 import { Catch } from "../types";
 
+// Helper function to convert number to Roman numeral
+const toRomanNumeral = (num: number): string => {
+  if (num === 0) return "0";
+  
+  const romanNumerals: [number, string][] = [
+    [20, 'XX'],
+    [19, 'XIX'],
+    [18, 'XVIII'],
+    [17, 'XVII'],
+    [16, 'XVI'],
+    [15, 'XV'],
+    [14, 'XIV'],
+    [13, 'XIII'],
+    [12, 'XII'],
+    [11, 'XI'],
+    [10, 'X'],
+    [9, 'IX'],
+    [8, 'VIII'],
+    [7, 'VII'],
+    [6, 'VI'],
+    [5, 'V'],
+    [4, 'IV'],
+    [3, 'III'],
+    [2, 'II'],
+    [1, 'I']
+  ];
+
+  let result = '';
+  for (const [value, symbol] of romanNumerals) {
+    while (num >= value) {
+      result += symbol;
+      num -= value;
+    }
+  }
+  return result;
+};
+
 export default function FishingView() {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -229,7 +266,12 @@ export default function FishingView() {
             }
         }
 
+        // Cards left in deck
+        riveRef.current?.setTextRunValue("deck_text", toRomanNumeral(PLAYER_DATA.deck.length));
+
     }, [PLAYER_DATA]);
+
+    
 
     useLayoutEffect(() => {
     const vmi = riveRef.current?.viewModelInstance;
