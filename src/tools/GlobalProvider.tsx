@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { GameState, CatchHistory } from '../types';
+import { GameState, CatchHistory, PlayerData } from '../types';
 
 interface GlobalContextType {
   ADDRESS: string;
@@ -11,24 +11,29 @@ interface GlobalContextType {
   currentHour: number;
 }
 
-export interface GameData {
-  address: string;
-  // other global game data fields...
-}
-
-export interface PlayerData {
-  address: string;
-  selectedCards: number[];
-}
-
 const GlobalContext = createContext<GlobalContextType | null>(null);
 
 const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const [ADDRESS, setADDRESS] = useState<string>('disconnected');
   const [PLAYER_DATA, setPLAYER_DATA] = useState<PlayerData>({
-    address: '',
-    selectedCards: [-1, -1, -1],
+    // address: '',
+    activeHand: [-1, -1, -1],
+    casts: 0,
+    catch: {
+      type: '',
+      length: '',
+      weight: '',
+      at: '',
+    },
+    deck: [],
+    deckCount: 0,
+    hand: [-1, -1, -1],
+    madness: 0,
+    playerId: '',
+    resetDeck: false,
+    state: 0,
+    // selectedCards: [-1, -1, -1],
   });
 
   const [gameState, setGameState] = useState<GameState | null>(null);
@@ -48,7 +53,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       }
     };
     fetchState();
-    const interval = setInterval(fetchState, 3_000);
+    const interval = setInterval(fetchState, 1_000);
     return () => clearInterval(interval);
   }, []);
 
@@ -69,9 +74,30 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     return () => clearInterval(interval);
   }, []);
 
+  // Fetch player info every 3 seconds
   useEffect(() => {
-    console.log("Cards: ", PLAYER_DATA.selectedCards);
-  }, [PLAYER_DATA.selectedCards]);
+    if (!ADDRESS) return;
+
+    const fetchState = async () => {
+      try {
+        const res = await fetch(
+          `https://sui-game.onrender.com/player-info/${ADDRESS}`
+        );
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data: PlayerData = await res.json();
+        setPLAYER_DATA(data);
+      } catch (e) {
+        console.error('Error fetching player info:', e);
+      }
+    };
+    fetchState();
+    const interval = setInterval(fetchState, 3_000);
+    return () => clearInterval(interval);
+  }, [ADDRESS]);
+
+  useEffect(() => {
+    console.log("PLAYER_DATA: ", PLAYER_DATA);
+  }, [PLAYER_DATA]);
 
   useEffect(() => {
     const fetchHour = async () => {

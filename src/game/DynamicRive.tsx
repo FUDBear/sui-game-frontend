@@ -4,12 +4,13 @@ import { useGlobalContext } from "../tools/GlobalProvider";
 
 export interface DynamicRiveProps {
   src: string;
-  cardIndex?: number;
-  timeNormalized?: number;
+  // cardIndex?: number;
+  // timeNormalized?: number;
   onRiveEvent?: (e: { name: string }) => void;
+  
 }
 
-const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent, cardIndex, timeNormalized }) => {
+const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent }) => {
 
   const { PLAYER_DATA, setPLAYER_DATA, gameState, currentHour } = useGlobalContext();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -50,41 +51,17 @@ const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent, cardIndex, 
     rafRef.current = requestAnimationFrame(step);
   };
 
-  useEffect(() => {
-    const vmi = riveRef.current?.viewModelInstance;
-    if (!vmi) return;
-    
-    startTimeAnimation(vmi);
-    
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, [currentHour]);
-
   // useEffect(() => {
-  //   console.log("Time normalized:", timeNormalized);
   //   const vmi = riveRef.current?.viewModelInstance;
-  //   if (vmi) {
-  //     console.log( "We have reference to the view model instance" );
-  //     const currentTime = vmi.number("game_time").value;
-  //     vmi.number("game_time").value = currentTime + 1;
-  //   } else {
-  //     console.log("No view model instance found");
-  //   }
-
+  //   if (!vmi) return;
+    
+  //   startTimeAnimation(vmi);
+    
+  //   return () => {
+  //     if (rafRef.current) cancelAnimationFrame(rafRef.current);
+  //   };
   // }, [currentHour]);
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     const vmi = riveRef.current?.viewModelInstance;
-  //     if (vmi) {
-  //       const currentTime = vmi.number("game_time").value;
-  //       vmi.number("game_time").value = currentTime + 1;
-  //     }
-  //   }, 1000);
-
-  //   return () => clearInterval(timer);
-  // }, []);
 
   const setCardIndex = ( vm: any, cardIndex: number ) => {
     
@@ -99,21 +76,21 @@ const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent, cardIndex, 
       selected.value = !selected.value;
       
       // Update PLAYER_DATA using functional update to ensure we have latest state
-      setPLAYER_DATA(prevData => {
-        const newSelectedCards = [...prevData.selectedCards];
-        newSelectedCards[cardIndex] = selected.value ? card.value : -1;
+      // setPLAYER_DATA(prevData => {
+      //   const newSelectedCards = [...prevData.selectedCards];
+      //   newSelectedCards[cardIndex] = selected.value ? card.value : -1;
         
-        console.log('Previous cards:', prevData.selectedCards);
-        console.log('New cards:', newSelectedCards);
-        console.log('Card index:', cardIndex);
-        console.log('Is selected:', selected.value);
-        console.log('Card value:', card.value);
+      //   console.log('Previous cards:', prevData.selectedCards);
+      //   console.log('New cards:', newSelectedCards);
+      //   console.log('Card index:', cardIndex);
+      //   console.log('Is selected:', selected.value);
+      //   console.log('Card value:', card.value);
         
-        return {
-          ...prevData,
-          selectedCards: newSelectedCards,
-        };
-      });
+      //   return {
+      //     ...prevData,
+      //     selectedCards: newSelectedCards,
+      //   };
+      // });
     }
   }
 
@@ -145,39 +122,39 @@ const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent, cardIndex, 
   //   }
   // }
 
-  useLayoutEffect(() => {
-    const vmi = riveRef.current?.viewModelInstance;
-    if (!vmi) {
-      console.log("No view model instance available");
-      return;
-    } else {
+  // useLayoutEffect(() => {
+  //   const vmi = riveRef.current?.viewModelInstance;
+  //   if (!vmi) {
+  //     console.log("No view model instance available");
+  //     return;
+  //   } else {
 
-      switch( gameState?.event ) {
-        case null:
-          vmi.number("event_index").value = 0;
-          break;
-        case "none":
-          vmi.number("event_index").value = 0;
-          break;
-        case "blood":
-          vmi.number("event_index").value = 1;
-          break;
-        case "frozen":
-          vmi.number("event_index").value = 2;
-          break;
-        case "toxic":
-          vmi.number("event_index").value = 3;
-          break;
-        case "nightmare":
-          vmi.number("event_index").value = 4;
-          break;
-      }
+  //     switch( gameState?.event ) {
+  //       case null:
+  //         vmi.number("event_index").value = 0;
+  //         break;
+  //       case "none":
+  //         vmi.number("event_index").value = 0;
+  //         break;
+  //       case "blood":
+  //         vmi.number("event_index").value = 1;
+  //         break;
+  //       case "frozen":
+  //         vmi.number("event_index").value = 2;
+  //         break;
+  //       case "toxic":
+  //         vmi.number("event_index").value = 3;
+  //         break;
+  //       case "nightmare":
+  //         vmi.number("event_index").value = 4;
+  //         break;
+  //     }
       
-      console.log("Setting event index to: ", gameState?.event );
-      console.log("Event index set to: ", vmi.number("event_index").value);
-    }
+  //     console.log("Setting event index to: ", gameState?.event );
+  //     console.log("Event index set to: ", vmi.number("event_index").value);
+  //   }
 
-  }, [gameState?.event]);
+  // }, [gameState?.event]);
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
@@ -197,7 +174,7 @@ const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent, cardIndex, 
     const ro = new ResizeObserver(resize);
     ro.observe(canvas.parentElement!);
     return () => ro.disconnect();
-  }, [src, cardIndex]);
+  }, [src]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -276,7 +253,7 @@ const DynamicRive: React.FC<DynamicRiveProps> = ({ src, onRiveEvent, cardIndex, 
     });
     riveRef.current = r;
     return () => r.cleanup();
-  }, [src, cardIndex]);
+  }, [src]);
 
   return <canvas ref={canvasRef} style={{ width: "100%", height: "100%", display: "block" }} />;
 };

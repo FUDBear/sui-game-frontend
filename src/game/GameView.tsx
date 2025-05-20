@@ -32,7 +32,7 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           playerId: ADDRESS,
-          cast: PLAYER_DATA.selectedCards,
+          cast: PLAYER_DATA.activeHand,
           cards: [],
         }),
       });
@@ -124,9 +124,6 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
       <SingleRiveSwitcher
         index={currentIndex}
         onIndexChange={setCurrentIndex}
-        onRiveEvent={handleRiveEvent}
-        cardIndex={currentIndex}
-        timeNormalized={timeNormalized}
       />
 
       {/* Cast & Claim Buttons */}
