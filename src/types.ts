@@ -49,3 +49,11 @@ export interface CatchRecord {
     weight: string;
     length: string;
   }
+
+  export interface FishCatchData {
+    playerId: string;
+    type: string;
+    at: string;
+    weight: number | null;
+    length: number | null;
+}

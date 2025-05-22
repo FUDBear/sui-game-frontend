@@ -96,7 +96,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, [ADDRESS]);
 
   useEffect(() => {
-    console.log("PLAYER_DATA: ", PLAYER_DATA);
+    // console.log("PLAYER_DATA: ", PLAYER_DATA);
   }, [PLAYER_DATA]);
 
   useEffect(() => {
