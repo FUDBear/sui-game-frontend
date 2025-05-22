@@ -4,15 +4,16 @@ import DynamicRive from "./DynamicRive";
 import { SingleRiveSwitcherProps } from '../types';
 
 const IntroView = React.lazy(() => import('./IntroView'));
+const ClubView = React.lazy(() => import('./ClubView'));
 const FishingView = React.lazy(() => import('./FishingView'));
 
-const RIVE_VIEWS = [IntroView, FishingView];
+const RIVE_VIEWS = [IntroView, ClubView, FishingView];
 
 export const riveUrls = [
   // "https://walrus.tusky.io/F2TKOpWVCphPPhjAlcFjxreRxMfPGuOk_hcf_NBqOyA",
   "/dfc_intro.riv",
+  "/df_club.riv",
   "/dfc_maingame.riv",
-  "/df_test.riv",
 ];
 
 export type RiveEventWithIndex = { name: string; index: number };
@@ -40,6 +41,8 @@ export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
           <Suspense fallback={<div>Loading…</div>}>
             {index === 0 ? (
               <IntroView onNext={next} />
+            ) : index === 1 ? (
+              <ClubView onNext={next} />
             ) : (
               <FishingView />
             )}

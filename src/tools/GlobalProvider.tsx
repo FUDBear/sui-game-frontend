@@ -40,7 +40,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [catchHistory, setCatchHistory] = useState<string[]>([]);
   const [currentHour, setCurrentHour] = useState<number>(0);
 
-  // Fetch game state every 3 seconds
+  // Fetch game state every 1 seconds
   useEffect(() => {
     const fetchState = async () => {
       try {
@@ -91,7 +91,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       }
     };
     fetchState();
-    const interval = setInterval(fetchState, 3_000);
+    const interval = setInterval(fetchState, 1_000);
     return () => clearInterval(interval);
   }, [ADDRESS]);
 
