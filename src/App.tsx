@@ -9,8 +9,8 @@ import GameView from "./game/GameView";
 import WalletNFTs from "./WalletNFTs";
 import { OwnedNFTs } from "./OwnedNFTs";
 import { useGlobalContext } from "./tools/GlobalProvider";
-function App() {
 
+function App() {
   const { ADDRESS, setADDRESS } = useGlobalContext();
   const account = useCurrentAccount();
 
@@ -20,7 +20,12 @@ function App() {
   }, [account]);
   
   return (
-    <>
+    <div style={{ 
+      width: "100%", 
+      minHeight: "100vh", 
+      backgroundColor: "black",
+      color: "white" // Adding white text color for better contrast
+    }}>
       {/* <Flex
         position="sticky"
         px="4"
@@ -71,7 +76,7 @@ function App() {
           <WalletStatus />
         </Container>
       </Container> */}
-    </>
+    </div>
   );
 }
 

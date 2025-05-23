@@ -41,7 +41,11 @@ const toRomanNumeral = (num: number): string => {
   return result;
 };
 
-export default function FishingView() {
+export interface FishingViewProps {
+  onPrevious: () => void;
+}
+
+export default function FishingView({ onPrevious }: FishingViewProps) {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const riveRef   = useRef<Rive>();
@@ -167,6 +171,20 @@ export default function FishingView() {
 
         claimTrigger.on((value: any) => {
           handleClaim();
+        });
+
+        // Club trigger
+        const clubTrigger = vmi?.trigger("club_trigger");
+        if (!clubTrigger) {
+          console.warn("No trigger named 'club_trigger' in Main_VM");
+          return;
+        } else {
+          console.log("Found trigger", clubTrigger.name);
+        }
+
+        clubTrigger.on((value: any) => {
+            console.log("Club trigger fired!");
+            onPrevious();
         });
       },
     });

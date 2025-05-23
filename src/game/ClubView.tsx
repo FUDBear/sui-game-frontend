@@ -17,6 +17,7 @@ export default function ClubView({ onNext }: ClubViewProps) {
 
     const [currentCatchIndex, setCurrentCatchIndex] = useState(0);
     const [fishCatches, setFishCatches] = useState<FishCatchData[]>([]);
+    const [isMinting, setIsMinting] = useState(false);
 
     // fetch all catches when ADDRESS becomes available
     useEffect(() => {
@@ -114,6 +115,116 @@ export default function ClubView({ onNext }: ClubViewProps) {
         return () => ro.disconnect();
     }, []);
 
+    // Separate useEffect for trigger setup
+    useEffect(() => {
+        const instance = riveRef.current;
+        const vmi = instance?.viewModelInstance;
+        if (!vmi) return;
+
+        // L Click Trigger
+        const lClickTrigger = vmi.trigger("LeftCatch");
+        if (!lClickTrigger) {
+          console.warn("No trigger named 'LClick' in Main_VM");
+          return;
+        } else {
+          console.log("Found trigger", lClickTrigger.name);
+        }
+
+        lClickTrigger.on(() => {
+          console.log("LClick trigger fired!");
+          setCurrentCatchIndex(prev => Math.max(0, prev - 1));
+        });
+
+        // R Click Trigger
+        const rClickTrigger = vmi.trigger("RightCatch");
+        if (!rClickTrigger) {
+          console.warn("No trigger named 'RClick' in Main_VM");
+          return;
+        } else {
+          console.log("Found trigger", rClickTrigger.name); 
+        }
+
+        rClickTrigger.on(() => {
+          console.log("RClick trigger fired!");
+          setCurrentCatchIndex(prev => Math.min(fishCatches.length - 1, prev + 1));
+        });
+
+        // Mint Trigger
+        const mintTrigger = vmi.trigger("Mint");
+        if (!mintTrigger) {
+          console.warn("No trigger named 'Mint' in Main_VM");
+          return;
+        } else {
+          console.log("Found trigger", mintTrigger.name);
+        }
+
+        mintTrigger.on(() => {
+          console.log("Mint trigger fired!");
+          // Capture the current index at the time the trigger is fired
+          const currentIndex = currentCatchIndex;
+          console.log("Current index at mint trigger:", currentIndex);
+          mintCaughtFish(currentIndex);
+        });
+
+        return () => {
+            lClickTrigger.off();
+            rClickTrigger.off();
+            mintTrigger.off();
+        };
+    }, [fishCatches.length, currentCatchIndex]); // Add currentCatchIndex to dependencies
+
+    const mintCaughtFish = async (indexToMint: number) => {
+        if (!ADDRESS) {
+          console.warn("No player address available.");
+          return;
+        }
+      
+        console.log("Attempting to mint fish at index:", indexToMint);
+      
+        if (indexToMint < 0 || indexToMint >= fishCatches.length) {
+          console.warn("Invalid catch index:", indexToMint);
+          return;
+        } else if (fishCatches[indexToMint].minted) {
+          console.warn("Fish already minted:", fishCatches[indexToMint].type);
+          return;
+        } else {
+          console.log("Minting fish:", fishCatches[indexToMint].type);
+        }
+      
+        setIsMinting(true);
+        try {
+          const res = await fetch("https://sui-game.onrender.com/mint-caught-fish", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ playerId: ADDRESS, index: indexToMint }),
+          });
+      
+          const data = await res.json();
+      
+          if (!res.ok) {
+            console.error("Mint failed:", data.error);
+            setIsMinting(false);
+            return;
+          }
+      
+          console.log("✅ Mint success:", data);
+      
+          setFishCatches(prev => {
+            const updated = [...prev];
+            if (updated[indexToMint]) {
+              updated[indexToMint] = { ...updated[indexToMint], minted: true };
+            }
+            return updated;
+          });
+      
+        } catch (err: any) {
+          console.error("Mint error:", err.message);
+        } finally {
+          setIsMinting(false);
+        }
+    };
+      
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -153,6 +264,21 @@ export default function ClubView({ onNext }: ClubViewProps) {
 
           onNext();
         });
+
+        // Mint Trigger
+        const mintTrigger = vmi?.trigger("Mint");
+        if (!mintTrigger) {
+          console.warn("No trigger named 'Mint' in Main_VM");
+          return;
+        } else {
+          console.log("Found trigger", mintTrigger.name);
+        }
+
+        mintTrigger.on(() => {
+          console.log("Mint trigger fired!");
+          mintCaughtFish(currentCatchIndex); 
+          
+        });
       },
     });
 
@@ -160,47 +286,24 @@ export default function ClubView({ onNext }: ClubViewProps) {
     return () => rive.cleanup();
   }, []);
 
-  // Separate useEffect for trigger setup
-  useEffect(() => {
-    const instance = riveRef.current;
-    const vmi = instance?.viewModelInstance;
-    if (!vmi) return;
-
-    // L Click Trigger
-    const lClickTrigger = vmi.trigger("LeftCatch");
-    if (!lClickTrigger) {
-      console.warn("No trigger named 'LClick' in Main_VM");
-      return;
-    } else {
-      console.log("Found trigger", lClickTrigger.name);
-    }
-
-    lClickTrigger.on(() => {
-      console.log("LClick trigger fired!");
-      setCurrentCatchIndex(prev => Math.max(0, prev - 1));
-    });
-
-    // R Click Trigger
-    const rClickTrigger = vmi.trigger("RightCatch");
-    if (!rClickTrigger) {
-      console.warn("No trigger named 'RClick' in Main_VM");
-      return;
-    } else {
-      console.log("Found trigger", rClickTrigger.name); 
-    }
-
-    rClickTrigger.on(() => {
-      console.log("RClick trigger fired!");
-      setCurrentCatchIndex(prev => Math.min(fishCatches.length - 1, prev + 1));
-    });
-
-    return () => {
-        lClickTrigger.off();
-        rClickTrigger.off();
-    };
-  }, [fishCatches.length]); // Only recreate when fishCatches length changes
-
   return (
-    <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%" }} />
+    <>
+      {isMinting && (
+        <div style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          color: 'white',
+          padding: '20px',
+          borderRadius: '10px',
+          zIndex: 1000
+        }}>
+          Minting your fish...
+        </div>
+      )}
+      <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%" }} />
+    </>
   );
 }

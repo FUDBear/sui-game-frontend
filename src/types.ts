@@ -56,4 +56,5 @@ export interface CatchRecord {
     at: string;
     weight: number | null;
     length: number | null;
+    minted?: boolean;
 }

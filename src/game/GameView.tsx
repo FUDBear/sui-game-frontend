@@ -85,7 +85,7 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
       </div>
 
       {/* State Display */}
-      {gameState && (
+      {/* {gameState && (
         <div style={{ position: 'absolute', bottom: 8, left: 8, zIndex: 10, background: 'rgba(0,0,0,0.5)', padding: 8, borderRadius: 4, color: '#fff' }}>
           <div><strong>Phase:</strong> {gameState.phase}</div>
           <div><strong>Event:</strong> {gameState.event ?? 'None'}</div>
@@ -93,7 +93,7 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
           <div><strong>Catches:</strong> {gameState.catches.length}</div>
           <div><strong>Current Hour:</strong> {currentHour}</div>
         </div>
-      )}
+      )} */}
 
       {/* History Toggle */}
       {/* <div style={{ position: 'absolute', bottom: 8, left: 8, zIndex: 10 }}>

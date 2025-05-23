@@ -44,7 +44,7 @@ export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
             ) : index === 1 ? (
               <ClubView onNext={next} />
             ) : (
-              <FishingView />
+              <FishingView onPrevious={prev} />
             )}
           </Suspense>
         </motion.div>
