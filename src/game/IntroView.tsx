@@ -1,4 +1,4 @@
-import { useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Rive, Layout, Fit, Alignment } from "@rive-app/canvas";
 import { useGlobalContext } from "../tools/GlobalProvider";
 
@@ -12,6 +12,7 @@ export default function IntroView({ onNext }: IntroViewProps) {
     
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const riveRef   = useRef<Rive>();
+
 
     const initPlayer = async () => {
         if (!ADDRESS && ADDRESS !== "disconnected") {
@@ -89,7 +90,7 @@ export default function IntroView({ onNext }: IntroViewProps) {
 
         const properties = vmi?.properties;
         console.log(properties);
-
+        
         // PlayGame trigger
         const playGameTrigger = vmi?.trigger("play_game");
         if (!playGameTrigger) {
@@ -156,6 +157,9 @@ export default function IntroView({ onNext }: IntroViewProps) {
   }, [ADDRESS]);
 
   return (
-    <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%" }} />
+    <>
+      <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%" }} />
+    </>
   );
+  
 }

@@ -1,7 +1,9 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from "framer-motion";
 import DynamicRive from "./DynamicRive";
 import { SingleRiveSwitcherProps } from '../types';
+// import ReactHowler from 'react-howler'
+import * as Tone from 'tone';
 
 const IntroView = React.lazy(() => import('./IntroView'));
 const ClubView = React.lazy(() => import('./ClubView'));
@@ -16,6 +18,12 @@ export const riveUrls = [
   "/dfc_maingame.riv",
 ];
 
+export const audioUrls = [
+  "https://walrus.tusky.io/MzUbX3bn_GBsArWCB2jELlJwdJwl-LUpOAjNkMizDOo",
+  "https://walrus.tusky.io/2okNCM9jqVmaiG60FxNHD3IlXMsloiU6P6RKvdfuG_s",
+  "https://walrus.tusky.io/n_AJtHq1E1mJnhnGzweRCEmKNvZxZuA3O_HquHUbs54",
+];
+
 export type RiveEventWithIndex = { name: string; index: number };
 
 export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
@@ -24,8 +32,48 @@ export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
 }) => {
   const prev = () => onIndexChange((index - 1 + RIVE_VIEWS.length) % RIVE_VIEWS.length);
   const next = () => onIndexChange((index + 1) % RIVE_VIEWS.length);
-
   const ActiveView = RIVE_VIEWS[index];
+  
+  const [canPlay, setCanPlay] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(true);
+  const playerRef = useRef<Tone.Player | null>(null);
+
+  // Unlock audio context
+  useEffect(() => {
+    const handler = async () => {
+      await Tone.start();
+      setCanPlay(true);
+      setShowOverlay(false);
+      document.removeEventListener("pointerdown", handler);
+    };
+    document.addEventListener("pointerdown", handler);
+    return () => document.removeEventListener("pointerdown", handler);
+  }, []);
+
+  // Change audio on index
+  useEffect(() => {
+    if (!canPlay) return;
+
+    if (playerRef.current) {
+      playerRef.current.stop();
+      playerRef.current.dispose();
+      playerRef.current = null;
+    }
+
+    const player = new Tone.Player({
+      url: audioUrls[index],
+      loop: true,
+      autostart: true,
+      volume: -6,
+    }).toDestination();
+
+    playerRef.current = player;
+
+    return () => {
+      player.stop();
+      player.dispose();
+    };
+  }, [index, canPlay]);
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
@@ -64,6 +112,38 @@ export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
           Next ▶
         </button> */}
       </div>
+
+      {showOverlay && (
+        <div
+          onClick={() => {
+            window.Howler?.ctx?.resume();
+            setCanPlay(true);
+            setShowOverlay(false);
+          }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'black',
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '2rem',
+            fontFamily: 'sans-serif',
+            cursor: 'pointer',
+            zIndex: 9999,
+            opacity: showOverlay ? 1 : 0,
+            transition: 'opacity 0.8s ease-out',
+          }}
+        >
+          Click to Start
+        </div>
+      )}
+  
+      
     </div>
   );
 };
