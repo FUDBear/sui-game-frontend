@@ -1,8 +1,6 @@
 import React, { Suspense, useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from "framer-motion";
-import DynamicRive from "./DynamicRive";
 import { SingleRiveSwitcherProps } from '../types';
-// import ReactHowler from 'react-howler'
 import * as Tone from 'tone';
 
 const IntroView = React.lazy(() => import('./IntroView'));
@@ -12,10 +10,12 @@ const FishingView = React.lazy(() => import('./FishingView'));
 const RIVE_VIEWS = [IntroView, ClubView, FishingView];
 
 export const riveUrls = [
-  // "https://walrus.tusky.io/F2TKOpWVCphPPhjAlcFjxreRxMfPGuOk_hcf_NBqOyA",
-  "/dfc_intro.riv",
-  "/df_club.riv",
-  "/dfc_maingame.riv",
+  "https://walrus.tusky.io/jRZ1yaSFMDhJK52qPGIupCk_JhD2TAevPbLpW7PuyYo",
+  "https://walrus.tusky.io/hCFOn8my043WjqupqvzS-yxZBymaCsdB7XXbSWrQgXE",
+  "https://walrus.tusky.io/zekWDL_iNhIHlRwGJSzo1HHjuz6v4OgnuQaIu0zbfeI",
+  // "/dfc_intro.riv",
+  // "/df_club.riv",
+  // "/dfc_maingame.riv",
 ];
 
 export const audioUrls = [
@@ -24,15 +24,12 @@ export const audioUrls = [
   "https://walrus.tusky.io/n_AJtHq1E1mJnhnGzweRCEmKNvZxZuA3O_HquHUbs54",
 ];
 
-export type RiveEventWithIndex = { name: string; index: number };
-
 export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
   index,
   onIndexChange,
 }) => {
   const prev = () => onIndexChange((index - 1 + RIVE_VIEWS.length) % RIVE_VIEWS.length);
   const next = () => onIndexChange((index + 1) % RIVE_VIEWS.length);
-  const ActiveView = RIVE_VIEWS[index];
   
   const [canPlay, setCanPlay] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useRef, useEffect, useLayoutEffect } from "react";
 import { Rive, Layout, Fit, Alignment } from "@rive-app/canvas";
 import { useGlobalContext } from "../tools/GlobalProvider";
 
@@ -80,7 +80,7 @@ export default function IntroView({ onNext }: IntroViewProps) {
         alignment: Alignment.TopCenter,
       }),
       autoBind: true,
-      onLoad: (instance) => {
+      onLoad: () => {
 
         let vmi = riveRef.current?.viewModelInstance;
         if (!vmi) {
@@ -103,11 +103,11 @@ export default function IntroView({ onNext }: IntroViewProps) {
         playGameTrigger.on(() => {
           console.log("PlayGame trigger fired!");
 
-          // Call init player endpoint here
-          initPlayer();
-
-          // tell the SingleRiveSwitcher to switch to the FishingView
-          onNext();
+          if( ADDRESS && ADDRESS !== "disconnected" ) { 
+            
+            initPlayer();
+            onNext();
+          }
         });
 
         let connected = vmi?.boolean("connected");

@@ -70,7 +70,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       }
     };
     fetchHistory();
-    const interval = setInterval(fetchHistory, 5_000);
+    const interval = setInterval(fetchHistory, 3_000);
     return () => clearInterval(interval);
   }, []);
 

@@ -1,5 +1,5 @@
 // src/game/FishingView.tsx
-import React, { useRef, useEffect, useLayoutEffect, useState } from "react";
+import { useRef, useEffect, useLayoutEffect, useState } from "react";
 import { Rive, Layout, Fit, Alignment } from "@rive-app/canvas";
 import { useGlobalContext } from "../tools/GlobalProvider";
 import { Catch } from "../types";
@@ -49,12 +49,16 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const riveRef   = useRef<Rive>();
-  const { ADDRESS, PLAYER_DATA, setPLAYER_DATA, gameState, currentHour } = useGlobalContext();
+  const { ADDRESS, PLAYER_DATA, gameState, currentHour } = useGlobalContext();
   const rafRef = useRef<number>();
   const currentHandRef = useRef<number[]>([-1, -1, -1]);
 
   const [hand, setHand] = useState<number[]>([-1, -1, -1]);
   const [lastCatch, setLastCatch] = useState<Catch | null>(null);
+
+  useEffect(() => {
+    console.log("FishingView mounted: " + hand + " " + lastCatch);
+  }, []);
 
 
   useLayoutEffect(() => {
@@ -141,7 +145,7 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
           console.log("Found trigger", clickTrigger.name);
         }
 
-        clickTrigger.on((value: any) => {
+        clickTrigger.on(() => {
           console.log("Trigger fired!");
 
           setCardIndex( vmi, clickIndex.value );
@@ -156,7 +160,7 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
           console.log("Found trigger", castTrigger.name);
         }
 
-        castTrigger.on((value: any) => {
+        castTrigger.on(() => {
             playerCast();
         });
 
@@ -169,7 +173,7 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
           console.log("Found trigger", claimTrigger.name);
         }
 
-        claimTrigger.on((value: any) => {
+        claimTrigger.on(() => {
           handleClaim();
         });
 
@@ -182,7 +186,7 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
           console.log("Found trigger", clubTrigger.name);
         }
 
-        clubTrigger.on((value: any) => {
+        clubTrigger.on(() => {
             console.log("Club trigger fired!");
             onPrevious();
         });
