@@ -10,12 +10,12 @@ const FishingView = React.lazy(() => import('./FishingView'));
 const RIVE_VIEWS = [IntroView, ClubView, FishingView];
 
 export const riveUrls = [
-  "https://walrus.tusky.io/jRZ1yaSFMDhJK52qPGIupCk_JhD2TAevPbLpW7PuyYo",
-  "https://walrus.tusky.io/hCFOn8my043WjqupqvzS-yxZBymaCsdB7XXbSWrQgXE",
-  "https://walrus.tusky.io/zekWDL_iNhIHlRwGJSzo1HHjuz6v4OgnuQaIu0zbfeI",
-  // "/dfc_intro.riv",
-  // "/df_club.riv",
-  // "/dfc_maingame.riv",
+  // "https://walrus.tusky.io/jRZ1yaSFMDhJK52qPGIupCk_JhD2TAevPbLpW7PuyYo",
+  // "https://walrus.tusky.io/hCFOn8my043WjqupqvzS-yxZBymaCsdB7XXbSWrQgXE",
+  // "https://walrus.tusky.io/zekWDL_iNhIHlRwGJSzo1HHjuz6v4OgnuQaIu0zbfeI",
+  "/dfc_intro.riv",
+  "/dfc_club.riv",
+  "/dfc_maingame.riv",
 ];
 
 export const audioUrls = [
