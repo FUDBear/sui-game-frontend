@@ -137,6 +137,7 @@ export default function ClubView({ onNext }: ClubViewProps) {
         const vmi = riveRef.current?.viewModelInstance;
         const playGameTrigger = vmi?.trigger("PlayGame");
         playGameTrigger?.on(() => onNext());
+        rive.resizeDrawingSurfaceToCanvas();
       },
     });
 

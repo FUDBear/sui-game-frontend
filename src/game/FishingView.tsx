@@ -193,6 +193,8 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
       },
     });
 
+    rive.resizeDrawingSurfaceToCanvas();
+
     riveRef.current = rive;
     return () => {
         if (rafRef.current) cancelAnimationFrame(rafRef.current);

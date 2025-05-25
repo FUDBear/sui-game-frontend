@@ -126,6 +126,8 @@ export default function IntroView({ onNext }: IntroViewProps) {
       },
     });
 
+    rive.resizeDrawingSurfaceToCanvas();
+
     riveRef.current = rive;
     return () => {
       rive.cleanup();
