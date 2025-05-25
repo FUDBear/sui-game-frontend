@@ -67,7 +67,7 @@ export default function IntroView({ onNext }: IntroViewProps) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || riveRef.current) return;
 
     const rive = new Rive({
       src: "/dfc_intro.riv",
@@ -127,8 +127,12 @@ export default function IntroView({ onNext }: IntroViewProps) {
     });
 
     riveRef.current = rive;
-    return () => rive.cleanup();
-  }, []);
+    return () => {
+      rive.cleanup();
+      riveRef.current = undefined;
+    };
+    
+  }, [ADDRESS]);
 
   useEffect(() => {
 

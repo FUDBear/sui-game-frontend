@@ -75,25 +75,42 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, []);
 
   // Fetch player info every 3 seconds
-  useEffect(() => {
-    if (!ADDRESS) return;
+  // in GlobalProvider.tsx
+useEffect(() => {
+  if (!ADDRESS || ADDRESS === 'disconnected') return;
 
-    const fetchState = async () => {
-      try {
-        const res = await fetch(
-          `https://sui-game.onrender.com/player-info/${ADDRESS}`
-        );
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data: PlayerData = await res.json();
-        setPLAYER_DATA(data);
-      } catch (e) {
-        console.error('Error fetching player info:', e);
+  let interval: number;
+  const fetchPlayer = async () => {
+    try {
+      const res = await fetch(`https://sui-game.onrender.com/player-info/${ADDRESS}`);
+      if (res.status === 404) {
+        // player doesn’t exist yet → create them
+        console.log(`Player ${ADDRESS} not found, initializing…`);
+        const initRes = await fetch(`https://sui-game.onrender.com/player/init`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ playerId: ADDRESS }),
+        });
+        if (!initRes.ok) throw new Error('Init failed');
+        const initJson = await initRes.json();
+        setPLAYER_DATA({ playerId: ADDRESS, ...initJson.state });
+        return;
       }
-    };
-    fetchState();
-    const interval = setInterval(fetchState, 1_000);
-    return () => clearInterval(interval);
-  }, [ADDRESS]);
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+      const data: PlayerData = await res.json();
+      setPLAYER_DATA(data);
+    } catch (e) {
+      console.error('Error fetching or initializing player info:', e);
+    }
+  };
+
+  fetchPlayer();
+  interval = window.setInterval(fetchPlayer, 3_000);
+  return () => clearInterval(interval);
+}, [ADDRESS]);
+
 
   useEffect(() => {
     // console.log("PLAYER_DATA: ", PLAYER_DATA);
