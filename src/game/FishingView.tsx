@@ -232,7 +232,7 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
         if (!vmi) return;
         
 
-        console.log("PLAYER_DATA: ", PLAYER_DATA);
+        // console.log("PLAYER_DATA: ", PLAYER_DATA);
         // If hand is [-1,-1,-1], set the hand to -1, -1, -1
 
         // Change player state
@@ -252,20 +252,20 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
                 console.warn("No property named 'catch_name' in Main_VM");
                 return;
             } else {
-                console.log("Found property", catchName.value);
+                // console.log("Found property", catchName.value);
 
                 if( PLAYER_DATA.catch ) {
-                    console.log( "PLAYER_DATA.catch: ", PLAYER_DATA.catch );
+                    // console.log( "PLAYER_DATA.catch: ", PLAYER_DATA.catch );
 
                     if( PLAYER_DATA.catch.type) {
-                        console.log("PLAYER_DATA.catch.type: ", PLAYER_DATA.catch.type);
+                        // console.log("PLAYER_DATA.catch.type: ", PLAYER_DATA.catch.type);
                         const name = "" + PLAYER_DATA.catch.type;
                         catchName.value = name;
                     }
                 }
             }
 
-            console.log( "catchName: ", vmi?.string("catch_name")?.value );
+            // console.log( "catchName: ", vmi?.string("catch_name")?.value );
         }
 
         
@@ -302,39 +302,39 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
     
 
     useLayoutEffect(() => {
-    const vmi = riveRef.current?.viewModelInstance;
-    const eventIndex = vmi?.number("event_index");
-    if (!vmi || !eventIndex) {
-      console.log("No view model instance available");
-      return;
-    } else {
+      const vmi = riveRef.current?.viewModelInstance;
+      const eventIndex = vmi?.number("event_index");
+      if (!vmi || !eventIndex) {
+        console.log("No view model instance available");
+        return;
+      } else {
 
-      switch( gameState?.event ) {
-        case null:
-          eventIndex.value = 0;
-          break;
-        case "none":
-          eventIndex.value = 0;
-          break;
-        case "blood":
-          eventIndex.value = 1;
-          break;
-        case "frozen":
-          eventIndex.value = 2;
-          break;
-        case "toxic":
-          eventIndex.value = 3;
-          break;
-        case "nightmare":
-          eventIndex.value = 4;
-          break;
+        switch( gameState?.event ) {
+          case null:
+            eventIndex.value = 0;
+            break;
+          case "none":
+            eventIndex.value = 0;
+            break;
+          case "blood":
+            eventIndex.value = 1;
+            break;
+          case "frozen":
+            eventIndex.value = 2;
+            break;
+          case "toxic":
+            eventIndex.value = 3;
+            break;
+          case "nightmare":
+            eventIndex.value = 4;
+            break;
+        }
+        
+        console.log("Setting event index to: ", gameState?.event );
+        console.log("Event index set to: ", eventIndex.value);
       }
-      
-      console.log("Setting event index to: ", gameState?.event );
-      console.log("Event index set to: ", eventIndex.value);
-    }
 
-  }, [gameState?.event]);
+    }, [gameState?.event]);
 
   const startTimeAnimation = (vmi: any) => {
     if (!vmi) {
@@ -347,23 +347,40 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
       console.log("No game_time property found in view model");
       return;
     }
+
+    console.log("game_time: ", timeInput.value);
   
     const HOURS = 24;
-    const duration = 20_000;              // 20 seconds
+    const duration = 20_000;
     const startValue = (currentHour % HOURS) * 100;
-    const endValue   = ((currentHour + 1) % HOURS) * 100;
+    const endValue = ((currentHour + 1) % HOURS) * 100;
     const t0 = performance.now();
+
+    // Handle day transition
+    const isDayTransition = endValue < startValue;
+    const adjustedEndValue = isDayTransition ? endValue + (HOURS * 100) : endValue;
   
-    // jump immediately to the start value
     timeInput.value = startValue;
   
-    // animation loop
     const step = (now: number) => {
       const elapsed = now - t0;
       const frac = Math.min(elapsed / duration, 1);
-      timeInput.value = startValue + (endValue - startValue) * frac;
+      let currentValue = startValue + (adjustedEndValue - startValue) * frac;
+      
+      // Normalize the value back to 0-2400 range
+      if (isDayTransition) {
+        currentValue = currentValue % (HOURS * 100);
+      }
+      
+      timeInput.value = currentValue;
+
       if (frac < 1) {
         rafRef.current = requestAnimationFrame(step);
+      } else {
+        console.log('Animation Complete:', {
+          finalValue: Math.round(currentValue),
+          totalElapsed: Math.round(elapsed)
+        });
       }
     };
   
@@ -424,7 +441,7 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
       }
 
       console.log("Player cast! ", currentHandRef.current);
-      // 3) [4, -1, -1] Someitmes the 
+      // 3) [4, -1, -1] Someitmes the 
 
       try {
         const res = await fetch("https://sui-game.onrender.com/playercast", {
