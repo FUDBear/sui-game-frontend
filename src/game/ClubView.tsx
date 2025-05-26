@@ -36,6 +36,20 @@ export default function ClubView({ onNext }: ClubViewProps) {
       .catch(err => console.error("Failed to fetch fish catches:", err));
   }, [ADDRESS]);
 
+  const loadCatches = async () => {
+    if (!ADDRESS) return;
+    try {
+      const res = await fetch(`https://sui-game.onrender.com/fish-catches/${ADDRESS}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: FishCatchData[] = await res.json();
+      console.log("Reloaded fishCatches via trigger:", data);
+      setFishCatches(data);
+      setCurrentCatchIndex(ci => Math.min(ci, data.length - 1));
+    } catch (e) {
+      console.error("Failed to reload fish catches:", e);
+    }
+  };
+
   useEffect(() => {
     console.log("fishCatches: ", fishCatches);
     const vmi = riveRef.current?.viewModelInstance;
@@ -70,12 +84,14 @@ export default function ClubView({ onNext }: ClubViewProps) {
     const catchesTrigger = vmi.trigger("Catches");
     catchesTrigger?.on(() => {
       console.log("catchesTrigger");
+      loadCatches();
     });
 
     return () => {
       lClickTrigger?.off();
       rClickTrigger?.off();
       mintTrigger?.off();
+      catchesTrigger?.off();
     };
   }, [fishCatches.length, currentCatchIndex]);
 
@@ -206,6 +222,26 @@ export default function ClubView({ onNext }: ClubViewProps) {
           volume={clubMusicVolume}
         />
       )}
+
+      <button
+        onClick={loadCatches}
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          padding: '10px 20px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          zIndex: 1000,
+          fontSize: '16px',
+          boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+        }}
+      >
+        Load Fishes
+      </button>
     </>
   );
 }
