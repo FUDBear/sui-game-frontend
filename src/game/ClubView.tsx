@@ -21,21 +21,6 @@ export default function ClubView({ onNext }: ClubViewProps) {
   const [clubMusicVolume, setClubMusicVolume] = useState(0);
   const [clubMusicReady, setClubMusicReady] = useState(false);
 
-  useEffect(() => {
-    if (!ADDRESS) return;
-
-    fetch(`https://sui-game.onrender.com/fish-catches/${ADDRESS}`)
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data: FishCatchData[]) => {
-        console.log("Loaded fishCatches:", data);
-        setFishCatches(data);
-      })
-      .catch(err => console.error("Failed to fetch fish catches:", err));
-  }, [ADDRESS]);
-
   const loadCatches = async () => {
     if (!ADDRESS) return;
     try {
@@ -159,12 +144,16 @@ export default function ClubView({ onNext }: ClubViewProps) {
         const playGameTrigger = vmi?.trigger("PlayGame");
         playGameTrigger?.on(() => onNext());
         rive.resizeDrawingSurfaceToCanvas();
+        
+        if (ADDRESS) {
+          loadCatches();
+        }
       },
     });
 
     riveRef.current = rive;
     return () => rive.cleanup();
-  }, []);
+  }, [ADDRESS]);
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
