@@ -134,7 +134,7 @@ export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
           }}
         >
           <img 
-            src="https://walrus.tusky.io/kBEL1XDqD3xskek8drUlrZa47uaF_bgx_-FuFiO6wYA"
+            src="https://walrus.tusky.io/XeM5yDNcyM9GV64r2GqVv1e4EhfqKN5_xLXdnmikdX8"
             alt="Click to Start"
             style={{
               maxWidth: '80%',
