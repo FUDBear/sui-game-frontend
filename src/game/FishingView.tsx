@@ -267,6 +267,8 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
 
             console.log( "catchName: ", vmi?.string("catch_name")?.value );
         }
+
+        
         
     }, [PLAYER_DATA]);
 
@@ -412,28 +414,21 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
 //   }, [hand]);
 
   const playerCast = async () => {
+
     if (!ADDRESS) {
         console.log("No player address set");
         return;
-    }
+      }
 
-    // Create a new array that preserves -1 values from the hand
-    const castArray = PLAYER_DATA.hand.map((handValue, index) => {
-        // If the hand slot is -1, keep it as -1
-        if (handValue === -1) return -1;
-        // Otherwise use the selected card value
-        return currentHandRef.current[index];
-    });
+      console.log("Player cast! ", currentHandRef.current);
 
-    console.log("Player cast! ", castArray);
-
-    try {
+      try {
         const res = await fetch("https://sui-game.onrender.com/playercast", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             playerId: ADDRESS,
-            cast: castArray,
+            cast: currentHandRef.current,
           }),
         });
         
@@ -459,9 +454,10 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
             }
         }
         
-    } catch (err: any) {
+      } catch (err: any) {
         console.error("playerCast error:", err);
-    }
+      } finally {
+      }
   }
 
   const handleClaim = async (): Promise<void> => {
@@ -519,6 +515,35 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
       ref={canvasRef}
       style={{ display: "block", width: "100%", height: "100%" }}
     />
+    <button
+      onClick={() => {
+        const vmi = riveRef.current?.viewModelInstance;
+        if (!vmi) return;
+        
+        for (let i = 0; i < 3; i++) {
+          const cardIndex = vmi?.number("card_" + i + "_index");
+          if (cardIndex) {
+            cardIndex.value = -1;
+          }
+        }
+      }}
+      style={{
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        padding: '10px 20px',
+        backgroundColor: '#4CAF50',
+        color: 'white',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        zIndex: 1000,
+        fontSize: '16px',
+        boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+      }}
+    >
+      Test Hide Cards
+    </button>
     </>
   );
 }

@@ -124,19 +124,24 @@ export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
             right: 0,
             bottom: 0,
             backgroundColor: 'black',
-            color: 'white',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '2rem',
-            fontFamily: 'sans-serif',
             cursor: 'pointer',
             zIndex: 9999,
             opacity: showOverlay ? 1 : 0,
             transition: 'opacity 0.8s ease-out',
           }}
         >
-          Click to Start
+          <img 
+            src="https://walrus.tusky.io/kBEL1XDqD3xskek8drUlrZa47uaF_bgx_-FuFiO6wYA"
+            alt="Click to Start"
+            style={{
+              maxWidth: '80%',
+              maxHeight: '80%',
+              objectFit: 'contain'
+            }}
+          />
         </div>
       )}
   

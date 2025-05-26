@@ -107,7 +107,7 @@ useEffect(() => {
   };
 
   fetchPlayer();
-  interval = window.setInterval(fetchPlayer, 3_000);
+  interval = window.setInterval(fetchPlayer, 1_000);
   return () => clearInterval(interval);
 }, [ADDRESS]);
 
