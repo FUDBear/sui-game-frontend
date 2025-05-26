@@ -1,4 +1,4 @@
-import { useState, forwardRef, useImperativeHandle, useRef } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
 import { ConnectButton } from "@mysten/dapp-kit";
 import { SingleRiveSwitcher } from "./SingleRiveSwitcher";
 
@@ -8,6 +8,10 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   useImperativeHandle(ref, () => containerRef.current!);
+
+  useEffect(() => {
+    console.log("🔥 THIS IS THE LATEST BUILD 🔥");
+  }, []);
 
   return (
     <div ref={containerRef} style={{ position: 'relative' }}>
