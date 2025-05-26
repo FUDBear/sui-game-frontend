@@ -36,6 +36,20 @@ export default function ClubView({ onNext }: ClubViewProps) {
       .catch(err => console.error("Failed to fetch fish catches:", err));
   }, [ADDRESS]);
 
+  const loadCatches = async () => {
+    if (!ADDRESS) return;
+    try {
+      const res = await fetch(`https://sui-game.onrender.com/fish-catches/${ADDRESS}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: FishCatchData[] = await res.json();
+      console.log("Reloaded fishCatches via trigger:", data);
+      setFishCatches(data);
+      setCurrentCatchIndex(ci => Math.min(ci, data.length - 1));
+    } catch (e) {
+      console.error("Failed to reload fish catches:", e);
+    }
+  };
+
   useEffect(() => {
     console.log("fishCatches: ", fishCatches);
     const vmi = riveRef.current?.viewModelInstance;
@@ -67,10 +81,17 @@ export default function ClubView({ onNext }: ClubViewProps) {
     const mintTrigger = vmi.trigger("Mint");
     mintTrigger?.on(() => mintCaughtFish(currentCatchIndex));
 
+    const catchesTrigger = vmi.trigger("Catches");
+    catchesTrigger?.on(() => {
+      console.log("catchesTrigger");
+      loadCatches();
+    });
+
     return () => {
       lClickTrigger?.off();
       rClickTrigger?.off();
       mintTrigger?.off();
+      catchesTrigger?.off();
     };
   }, [fishCatches.length, currentCatchIndex]);
 
