@@ -211,26 +211,6 @@ export default function ClubView({ onNext }: ClubViewProps) {
           volume={clubMusicVolume}
         />
       )}
-
-      <button
-        onClick={loadCatches}
-        style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          padding: '10px 20px',
-          backgroundColor: '#4CAF50',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          zIndex: 1000,
-          fontSize: '16px',
-          boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-        }}
-      >
-        Load Fishes
-      </button>
     </>
   );
 }
