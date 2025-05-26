@@ -289,6 +289,11 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
             }
         }
 
+        // If hand is [-1,-1,-1], reset the hand to prevent phantom values
+        if( PLAYER_DATA.hand.every(value => value === -1) ) {
+            resetHand();
+        }
+
         // Cards left in deck
         riveRef.current?.setTextRunValue("deck_text", toRomanNumeral(PLAYER_DATA.deck.length));
 
@@ -379,8 +384,6 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
       // Toggle the selection state
       selected.value = !selected.value;
 
-      
-
       setHand(prevHand => {
         const newHand = [...prevHand];
         newHand[cardIndex] = selected.value ? card.value : -1;
@@ -421,6 +424,7 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
       }
 
       console.log("Player cast! ", currentHandRef.current);
+      // 3) [4, -1, -1] Someitmes the 
 
       try {
         const res = await fetch("https://sui-game.onrender.com/playercast", {
@@ -491,6 +495,8 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
       setLastCatch(mapped);
       console.log("Claim success, stored:", mapped);
 
+      resetHand();
+
         // Clear the catch
         const vmi = riveRef.current?.viewModelInstance;
         if (!vmi) return;
@@ -507,6 +513,11 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
       console.error("Claim error:", err);
     }
   };
+
+  const resetHand = () => {
+    currentHandRef.current = [-1, -1, -1];
+    setHand([-1, -1, -1]);
+  }
   
 
   return (
@@ -515,35 +526,7 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
       ref={canvasRef}
       style={{ display: "block", width: "100%", height: "100%" }}
     />
-    <button
-      onClick={() => {
-        const vmi = riveRef.current?.viewModelInstance;
-        if (!vmi) return;
-        
-        for (let i = 0; i < 3; i++) {
-          const cardIndex = vmi?.number("card_" + i + "_index");
-          if (cardIndex) {
-            cardIndex.value = -1;
-          }
-        }
-      }}
-      style={{
-        position: 'fixed',
-        bottom: '20px',
-        right: '20px',
-        padding: '10px 20px',
-        backgroundColor: '#4CAF50',
-        color: 'white',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        zIndex: 1000,
-        fontSize: '16px',
-        boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-      }}
-    >
-      Test Hide Cards
-    </button>
+    
     </>
   );
 }
