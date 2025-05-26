@@ -52,7 +52,6 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
   const { ADDRESS, PLAYER_DATA, gameState, currentHour } = useGlobalContext();
   const rafRef = useRef<number>();
   const currentHandRef = useRef<number[]>([-1, -1, -1]);
-
   const [hand, setHand] = useState<number[]>([-1, -1, -1]);
   const [lastCatch, setLastCatch] = useState<Catch | null>(null);
 
@@ -234,6 +233,7 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
         
 
         console.log("PLAYER_DATA: ", PLAYER_DATA);
+        // If hand is [-1,-1,-1], set the hand to -1, -1, -1
 
         // Change player state
         const fishermanState = vmi?.number("fisherman_state");
@@ -267,8 +267,6 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
 
             console.log( "catchName: ", vmi?.string("catch_name")?.value );
         }
-
-        
         
     }, [PLAYER_DATA]);
 
@@ -284,9 +282,8 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
                 console.warn("No property named 'card_" + i + "_index' in Main_VM");
                 return;
             } else {
-                if( PLAYER_DATA.hand[i] !== -1 ) {
-                    cardIndex.value = PLAYER_DATA.hand[i];
-                } 
+                // Always set the value, whether it's -1 or not
+                cardIndex.value = PLAYER_DATA.hand[i];
             }
         }
 
@@ -415,21 +412,28 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
 //   }, [hand]);
 
   const playerCast = async () => {
-
     if (!ADDRESS) {
         console.log("No player address set");
         return;
-      }
+    }
 
-      console.log("Player cast! ", currentHandRef.current);
+    // Create a new array that preserves -1 values from the hand
+    const castArray = PLAYER_DATA.hand.map((handValue, index) => {
+        // If the hand slot is -1, keep it as -1
+        if (handValue === -1) return -1;
+        // Otherwise use the selected card value
+        return currentHandRef.current[index];
+    });
 
-      try {
+    console.log("Player cast! ", castArray);
+
+    try {
         const res = await fetch("https://sui-game.onrender.com/playercast", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             playerId: ADDRESS,
-            cast: currentHandRef.current,
+            cast: castArray,
           }),
         });
         
@@ -455,10 +459,9 @@ export default function FishingView({ onPrevious }: FishingViewProps) {
             }
         }
         
-      } catch (err: any) {
+    } catch (err: any) {
         console.error("playerCast error:", err);
-      } finally {
-      }
+    }
   }
 
   const handleClaim = async (): Promise<void> => {
