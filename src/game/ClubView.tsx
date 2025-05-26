@@ -44,6 +44,7 @@ export default function ClubView({ onNext }: ClubViewProps) {
       const data: FishCatchData[] = await res.json();
       console.log("Reloaded fishCatches via trigger:", data);
       setFishCatches(data);
+      // reset index if out of bounds
       setCurrentCatchIndex(ci => Math.min(ci, data.length - 1));
     } catch (e) {
       console.error("Failed to reload fish catches:", e);
@@ -84,14 +85,12 @@ export default function ClubView({ onNext }: ClubViewProps) {
     const catchesTrigger = vmi.trigger("Catches");
     catchesTrigger?.on(() => {
       console.log("catchesTrigger");
-      loadCatches();
     });
 
     return () => {
-      // lClickTrigger?.off();
-      // rClickTrigger?.off();
-      // mintTrigger?.off();
-      // catchesTrigger?.off();
+      lClickTrigger?.off();
+      rClickTrigger?.off();
+      mintTrigger?.off();
     };
   }, [fishCatches.length, currentCatchIndex]);
 
