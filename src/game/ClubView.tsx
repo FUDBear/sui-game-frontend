@@ -88,10 +88,10 @@ export default function ClubView({ onNext }: ClubViewProps) {
     });
 
     return () => {
-      lClickTrigger?.off();
-      rClickTrigger?.off();
-      mintTrigger?.off();
-      catchesTrigger?.off();
+      // lClickTrigger?.off();
+      // rClickTrigger?.off();
+      // mintTrigger?.off();
+      // catchesTrigger?.off();
     };
   }, [fishCatches.length, currentCatchIndex]);
 
