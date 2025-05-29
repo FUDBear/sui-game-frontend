@@ -108,7 +108,7 @@ export const PitchDeck = () => {
               zIndex: 3,
               textAlign: 'center',
               color: 'white',
-              fontFamily: 'girassol-regular',
+              fontFamily: '"New Rocker", system-ui',
               fontSize: '1.5rem',
               padding: '20px',
               width: '100%',
@@ -203,14 +203,14 @@ export const PitchDeck = () => {
                 zIndex: 1,
                 }}
             >
-                <h2 style={{ fontFamily: 'girassol-regular', marginBottom: '1rem' }}>
+                <h2 style={{ fontFamily: '"New Rocker", system-ui', marginBottom: '1rem' }}>
                     "Crypto" Games
                 </h2>
-                <p style={{ lineHeight: 1.6, marginBottom: '1rem' }}>
+                <p style={{ fontFamily: 'girassol-regular', lineHeight: 1.6, marginBottom: '1rem' }}>
                 Games like Roblox, Candy Crush, and Dota 2 prove that wildly different audiences exist within gaming—each drawn to distinct mechanics, aesthetics, and engagement styles.
                 But most crypto games ignore this. Instead, designing around generic gameplay loops—hoping to attract users from existing game segments without understanding what those players actually want.
                 </p>
-                <p style={{ lineHeight: 1.6 }}>
+                <p style={{ fontFamily: 'girassol-regular', lineHeight: 1.6 }}>
                 The result?
                 Web3 still lacks its “Halo” or “Wii Bowling”—that breakout title which proves the platform’s value and justifies its existence to mainstream gamers.
                 </p>
@@ -292,23 +292,23 @@ export const PitchDeck = () => {
 
             {/* Text Side */}
             <div style={{ flex: 1, padding: '2rem', width: '50%', zIndex: 1 }}>
-                <h2 style={{ fontFamily: 'girassol-regular', marginBottom: '1rem' }}>
+                <h2 style={{ fontFamily: '"New Rocker", system-ui', marginBottom: '1rem' }}>
                 Welcome to Darkshore Fishing Club
                 </h2>
-                <p style={{ lineHeight: 1.6, marginBottom: '1rem' }}>
+                <p style={{ fontFamily: 'girassol-regular', lineHeight: 1.6, marginBottom: '1rem' }}>
                 A game with a distinct identity—rooted in a moody, creepy-cozy art style and brought to life through a blockchain-native, generative NFT fishing mechanic.
 
                 Unlike most crypto games, DFC doesn’t treat tokens as an afterthought. The core gameplay loop is designed from the ground up around ownership, creativity, and dynamic content—things that only blockchain can offer.
 
                 Instead of chasing hype or mimicking Web2 games, DFC offers players a compelling reason to engage:
                 </p>
-                <ul style={{ lineHeight: 1.6, marginBottom: '1rem' }}>
+                <ul style={{ fontFamily: 'girassol-regular', lineHeight: 1.6, marginBottom: '1rem' }}>
                 <li>Focused, tight gameplay.</li>
                 <li>Beautifully hand-crafted assets.</li>
                 <li>Striking, original visual and audio design.</li>
                 <li>Meaningful NFT ownership tied directly to in-game performance.</li>
                 </ul>
-                <p style={{ lineHeight: 1.6 }}>
+                <p style={{ fontFamily: 'girassol-regular', lineHeight: 1.6 }}>
                 This isn't Web2 with tokens duct-taped on. It's a game designed
                 from the ground up with Web3 in mind.
                 </p>
@@ -374,7 +374,7 @@ export const PitchDeck = () => {
             style={{
             position: 'absolute',
             inset: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
             zIndex: 1,
             }}
         />
@@ -388,14 +388,14 @@ export const PitchDeck = () => {
         >
             <h2
             style={{
-                fontFamily: 'girassol-regular',
+                fontFamily: '"New Rocker", system-ui',
                 fontSize: '2rem',
                 marginBottom: '1rem',
             }}
             >
                 Simple Game Loop
             </h2>
-            <p style={{ fontSize: '1rem', lineHeight: 1.6 }}>
+            <p style={{ fontFamily: 'girassol-regular', fontSize: '1rem', lineHeight: 1.6 }}>
                 Inspired by Netflix's "second-screen" design strategy, DFC provides an experience that fits into modern life. It doesn't demand constant attention—players can fish while scrolling through social media or watching TV. But when they do engage, the strategy runs deep and the rewards are on chain.
             </p>
         </div>
@@ -444,7 +444,7 @@ export const PitchDeck = () => {
                 style={{
                 position: 'absolute',
                 inset: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
                 zIndex: 1,
                 }}
             />
@@ -459,14 +459,14 @@ export const PitchDeck = () => {
             >
                 <h2
                 style={{
-                    fontFamily: 'girassol-regular',
+                    fontFamily: '"New Rocker", system-ui',
                     fontSize: '2rem',
                     marginBottom: '1rem',
                 }}
                 >
                 Theme
                 </h2>
-                <p style={{ fontSize: '1rem', lineHeight: 1.6 }}>
+                <p style={{ fontFamily: 'girassol-regular', fontSize: '1rem', lineHeight: 1.6 }}>
                 Creepy-Cozy—a term I've coined to describe DFC's aesthetic.
                 It's not horror, but it's always slightly unsettling.
                 Heavy ink strokes, lo-fi ambience, and off-kilter music create a
@@ -483,7 +483,7 @@ export const PitchDeck = () => {
                 width: '100%',
                 minHeight: '60vh',
                 backgroundImage:
-                'url("https://walrus.tusky.io/QVi9dGE7XOTjL3p1rpb6iVHnHJLwrIVkaLSoNlYu_L4")',
+                'url("https://walrus.tusky.io/brPK-_HMQ2Zxc_xulnepYMJ6HAMx5bq0BP4pRPcoUCw")',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
@@ -518,7 +518,7 @@ export const PitchDeck = () => {
                     style={{
                     position: 'absolute',
                     inset: 0,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
                     zIndex: 1,
                     }}
                 />
@@ -533,17 +533,17 @@ export const PitchDeck = () => {
                 >
                     <h2
                     style={{
-                        fontFamily: 'girassol-regular',
+                        fontFamily: '"New Rocker", system-ui',
                         fontSize: '2rem',
                         marginBottom: '1rem',
                     }}
                     >
                     Treasures in the Deep
                     </h2>
-                    <p style={{ fontSize: '1rem', lineHeight: 1.6, marginBottom: '1rem' }}>
+                    <p style={{ fontFamily: 'girassol-regular', fontSize: '1rem', lineHeight: 1.6, marginBottom: '1rem' }}>
                         <b>Earn:</b> Tokens would be earned by players for selling rare catches, finding sunken treasure and during seasonal Fishing Tournaments. 
                     </p>
-                    <p style={{ fontSize: '1rem', lineHeight: 1.6, marginBottom: '1rem' }}>
+                    <p style={{ fontFamily: 'girassol-regular', fontSize: '1rem', lineHeight: 1.6, marginBottom: '1rem' }}>
                         <b>Spend:</b> Used to purchase new cards, upgrade boats, and craft rare fishing poles.
                     </p>
                 </div>
@@ -556,7 +556,7 @@ export const PitchDeck = () => {
             width: '100%',
             minHeight: '60vh',
             backgroundImage:
-            'url("https://walrus.tusky.io/brPK-_HMQ2Zxc_xulnepYMJ6HAMx5bq0BP4pRPcoUCw")',
+            'url("https://walrus.tusky.io/kSyGV9WE3_4kxjiyWMNUCUSE-i7k0c9Gbo4sMd-9XOk")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             display: 'flex',
@@ -573,7 +573,7 @@ export const PitchDeck = () => {
             top: '1rem',
             left: '1rem',
             zIndex: 2,
-            fontFamily: 'girassol-regular',
+            fontFamily: '"New Rocker", system-ui',
             fontSize: '0.75rem',
             textTransform: 'uppercase',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -588,7 +588,7 @@ export const PitchDeck = () => {
             style={{
             position: 'absolute',
             inset: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
             zIndex: 1,
             }}
         />
@@ -601,14 +601,14 @@ export const PitchDeck = () => {
         >
             <h2
             style={{
-                fontFamily: 'girassol-regular',
+                fontFamily: '"New Rocker", system-ui',
                 fontSize: '2rem',
                 marginBottom: '1rem',
             }}
             >
                 The Long Road Ahead
             </h2>
-            <ul style={{ lineHeight: 1.6, marginBottom: '1rem', fontSize: '1rem', textAlign: 'left' }}>
+            <ul style={{ fontFamily: 'girassol-regular', lineHeight: 1.6, marginBottom: '1rem', fontSize: '1rem', textAlign: 'left' }}>
                 <li>Use your boat to explore and fish in different locations on the lake.</li>
                 <li>Weather, temperature and advanced fish behavior simulations to create deep gameplay.</li>
                 <li>Crafting system where players craft new cards, poles, boats and NFT options.</li>
@@ -620,6 +620,7 @@ export const PitchDeck = () => {
 
 
     {/* Team Section: Text Left, Image Right */}
+    <a href="https://fudbear.ar.io/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
     <section
         style={{
             position: 'relative',         // enable absolute positioning of label
@@ -646,13 +647,13 @@ export const PitchDeck = () => {
                 zIndex: 1,
                 }}
             >
-                <h2 style={{ fontFamily: 'girassol-regular', marginBottom: '1rem' }}>
+                <h2 style={{ fontFamily: '"New Rocker", system-ui', marginBottom: '1rem' }}>
                     Builder
                 </h2>
-                <p style={{ lineHeight: 1.6, marginBottom: '1rem' }}>
+                <p style={{ fontFamily: 'girassol-regular', lineHeight: 1.6, marginBottom: '1rem' }}>
                     As a solo developer and artist, I move fast, iterate often, and build with purpose. Since 2010, I’ve worked in indie game development across art, code, and production. I moved into Web3 in 2020, and in just the past year:
                 </p>
-                <ul style={{ lineHeight: 1.6, marginBottom: '1rem' }}>
+                <ul style={{ fontFamily: 'girassol-regular', lineHeight: 1.6, marginBottom: '1rem' }}>
                     <li>Built the most popular NFT collection on Arweave</li>
                     <li>Won or placed in 5 major hackathons</li>
                     <li>Took 3 first-place bounties at ETH Denver 2025</li>
@@ -683,7 +684,14 @@ export const PitchDeck = () => {
                 }}
                 />
             </div>
-    </section>
+            
+    </section> 
+    <div style={{ fontFamily: 'girassol-regular', textAlign: 'center', marginTop: '1rem' }}>
+        <p style={{ lineHeight: 1.6 }}>
+            Click to see my portfolio.
+        </p>
+    </div>
+    </a>
 
         {/* Break Image */}
         <section
@@ -696,7 +704,7 @@ export const PitchDeck = () => {
         <section
             style={{ display: 'flex',  flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '2rem 2rem',
                 backgroundColor: 'black', textAlign: 'left', color: 'white', fontFamily: 'girassol-regular', fontSize: '1rem', }} >
-            <h2 style={{ marginBottom: '1rem', fontFamily: 'girassol-regular' }}>
+            <h2 style={{ marginBottom: '1rem', fontFamily: '"New Rocker", system-ui' }}>
                 SUI Tech Used
             </h2>
             <p style={{ maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>
@@ -715,7 +723,7 @@ export const PitchDeck = () => {
         <section
             style={{ display: 'flex',  flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '2rem 2rem',
                 backgroundColor: 'black', textAlign: 'left', color: 'white', fontFamily: 'girassol-regular', fontSize: '1rem', }} >
-            <h2 style={{ marginBottom: '1rem', fontFamily: 'girassol-regular' }}>
+            <h2 style={{ marginBottom: '1rem', fontFamily: '"New Rocker", system-ui' }}>
                 Tech Used
             </h2>
             <img src="https://walrus.tusky.io/ier9-jZGSMgDVowyGJrHjuGkLvZI7q03Rm1eWNvn2Hs" alt="SUI Logos" style={{ width: '40%', height: 'auto' }} />
