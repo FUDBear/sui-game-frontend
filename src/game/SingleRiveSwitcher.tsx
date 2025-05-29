@@ -34,8 +34,8 @@ export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
   const [canPlay, setCanPlay] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);
   const playerRef = useRef<Tone.Player | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
 
-  // Unlock audio context
   useEffect(() => {
     const handler = async () => {
       await Tone.start();
@@ -47,7 +47,6 @@ export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
     return () => document.removeEventListener("pointerdown", handler);
   }, []);
 
-  // Change audio on index
   useEffect(() => {
     if (!canPlay) return;
 
@@ -71,6 +70,12 @@ export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
       player.dispose();
     };
   }, [index, canPlay]);
+
+  useEffect(() => {
+    if (playerRef.current) {
+      playerRef.current.volume.value = isMuted ? -Infinity : -6;
+    }
+  }, [isMuted]);
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
@@ -104,11 +109,67 @@ export const SingleRiveSwitcher: React.FC<SingleRiveSwitcherProps> = ({
           textAlign: 'center',
         }}
       >
-        {/* <button onClick={prev}>◀ Prev</button>
-        <button onClick={next} style={{ marginLeft: 8 }}>
-          Next ▶
-        </button> */}
       </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '1rem',
+          right: '1rem',
+          display: 'flex',
+          gap: '0.5rem',
+          zIndex: 10,
+        }}
+      >
+      
+      <button
+        onClick={() => window.open('https://x.com/darkshore_fc', '_blank')}
+        style={{
+          backgroundColor: 'rgba(0,0,0,0.6)',
+          border: 'none',
+          padding: '0.5rem',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        aria-label="Go to X"
+      >
+        <img
+          src="https://walrus.tusky.io/10GPGQ_sJbfGacgV_pRCTmk14UXPMoSN3zLTXmo8KuM"
+          alt="X Logo"
+          style={{ width: '18px', height: '18px', display: 'block' }}
+        />
+      </button>
+
+          <button
+            onClick={() => setIsMuted(m => !m)}
+            style={{
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              border: 'none',
+              padding: '0.5rem',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
+          >
+            <img
+              src={
+                isMuted
+                  ? 'https://walrus.tusky.io/gj6K10WThcdzUXfcH_8ABZW3JG8EltPDRAjXntplio8'
+                  : 'https://walrus.tusky.io/XxNTVCBTLgVvDZywbaYX1WaD_o088VXrljS1AMifrG0'
+              }
+              alt={isMuted ? 'Unmute' : 'Mute'}
+              style={{ width: '24px', height: '24px', display: 'block' }}
+            />
+          </button>
+      </div>
+
+
 
       {showOverlay && (
         <div

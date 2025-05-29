@@ -1,6 +1,7 @@
 import { useState, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
 import { ConnectButton } from "@mysten/dapp-kit";
 import { SingleRiveSwitcher } from "./SingleRiveSwitcher";
+import { PitchDeck } from "./PitchDeck";
 
 const GameView = forwardRef<HTMLDivElement>((_, ref) => {
 
@@ -27,6 +28,8 @@ const GameView = forwardRef<HTMLDivElement>((_, ref) => {
         index={currentIndex}
         onIndexChange={setCurrentIndex}
       />
+
+      <PitchDeck />
 
       
     </div>
