@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import GameView from "./game/GameView";
-import { PitchDeck } from "./game/PitchDeck";
 import { useGlobalContext } from "./tools/GlobalProvider";
 
 function App() {

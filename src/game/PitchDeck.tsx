@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRef, useEffect, useLayoutEffect } from "react";
 import { Rive, Layout, Fit, Alignment } from "@rive-app/canvas";
 
