@@ -161,7 +161,7 @@ export const PitchDeck = () => {
         >
           Your browser does not support the video tag.
         </video>
-      </section> */}
+      </section>
 
       {/* Problem Section: Text Left, Image Right */}
     <section
@@ -719,6 +719,14 @@ export const PitchDeck = () => {
                 Tech Used
             </h2>
             <img src="https://walrus.tusky.io/ier9-jZGSMgDVowyGJrHjuGkLvZI7q03Rm1eWNvn2Hs" alt="SUI Logos" style={{ width: '40%', height: 'auto' }} />
+        </section>
+
+        <section style={{ display: 'flex',  flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '2rem 2rem',
+                backgroundColor: 'black', textAlign: 'left', color: 'white', fontFamily: 'girassol-regular', fontSize: '1rem', }} >
+            <h2 style={{ marginBottom: '1rem', fontFamily: 'girassol-regular' }}>
+                Project Demo Video (Early Alpha Build)
+            </h2>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/bnUqpVu-TvI" frameBorder="0" allowFullScreen></iframe>
         </section>
     
     </>
