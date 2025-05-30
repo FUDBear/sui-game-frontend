@@ -340,7 +340,7 @@ export const PitchDeck = () => {
             width: '100%',
             minHeight: '60vh',
             backgroundImage:
-            'url("https://walrus.tusky.io/ZznN4hfgB4cfPbeUoXlJlCPmtha7BKr93LKv0ZR1CGM")',
+            'url("https://walrus.tusky.io/5_OG5KCR1JU2hROeiY7FAsOwp6oLZbi_70-Il6JKALk")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             display: 'flex',
@@ -374,7 +374,7 @@ export const PitchDeck = () => {
             style={{
             position: 'absolute',
             inset: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
             zIndex: 1,
             }}
         />
@@ -393,10 +393,10 @@ export const PitchDeck = () => {
                 marginBottom: '1rem',
             }}
             >
-                Simple Game Loop
+                Core Game Loop
             </h2>
             <p style={{ fontFamily: 'girassol-regular', fontSize: '1rem', lineHeight: 1.6 }}>
-                Inspired by Netflix's "second-screen" design strategy, DFC provides an experience that fits into modern life. It doesn't demand constant attention—players can fish while scrolling through social media or watching TV. But when they do engage, the strategy runs deep and the rewards are on chain.
+                Pick Cards, Fish, Catch, Mint, Repeat. Inspired by Netflix's "second-screen" design strategy, DFC provides an experience that fits into modern life. It doesn't demand constant attention—players can fish while scrolling through social media or watching TV. But when they do engage, the strategy runs deep and the rewards are on chain.
             </p>
         </div>
     </section>
@@ -444,7 +444,7 @@ export const PitchDeck = () => {
                 style={{
                 position: 'absolute',
                 inset: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                backgroundColor: 'rgba(0, 0, 0, 0.3)',
                 zIndex: 1,
                 }}
             />
@@ -518,7 +518,7 @@ export const PitchDeck = () => {
                     style={{
                     position: 'absolute',
                     inset: 0,
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
                     zIndex: 1,
                     }}
                 />
@@ -573,7 +573,7 @@ export const PitchDeck = () => {
             top: '1rem',
             left: '1rem',
             zIndex: 2,
-            fontFamily: '"New Rocker", system-ui',
+            fontFamily: 'girassol-regular',
             fontSize: '0.75rem',
             textTransform: 'uppercase',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -588,7 +588,7 @@ export const PitchDeck = () => {
             style={{
             position: 'absolute',
             inset: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
             zIndex: 1,
             }}
         />
